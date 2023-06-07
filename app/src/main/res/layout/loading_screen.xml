@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="100dp"
+    android:gravity="center"
+    android:background="@color/white"
+    android:padding="15dp"
+    android:layout_height="100dp">
+
+    <ProgressBar
+        android:background="@color/white"
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="80dp"
+        android:layout_height="66dp"/>
+
+
+</LinearLayout>

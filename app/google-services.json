@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "226362332438",
+    "project_id": "resolution-ai-app",
+    "storage_bucket": "resolution-ai-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:226362332438:android:bb536f26d442eae4f3ec37",
+        "android_client_info": {
+          "package_name": "com.example.resolutionai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "226362332438-tnte736tnimbqmkkjia0vijit4nje2a5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.resolutionai",
+            "certificate_hash": "9a3660d86dd5d279b616424a53167331495114b3"
+          }
+        },
+        {
+          "client_id": "226362332438-h8f2q68t7trcecl5uucboq5h0sge2lnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQP31T2uUmbN1ExcU7VXYOMWEZ5wYN8O4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "226362332438-h8f2q68t7trcecl5uucboq5h0sge2lnf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

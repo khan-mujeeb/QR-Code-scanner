@@ -14,5 +14,5 @@ object FirebaseUtils {
     val database = Firebase.database
     val databaseRef = database.getReference(result)
 
-    val getPhonenumber = firebaseAuth.currentUser?.phoneNumber.toString()
+    val getPhonenumber = firebaseUser?.phoneNumber.toString()
 }

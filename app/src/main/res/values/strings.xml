@@ -4,5 +4,12 @@
     <string name="enter_your_phone_number">Enter your phone number</string>
     <string name="get_otp">Get OTP</string>
     <string name="scan_qr">Scan QR</string>
+    <string name="result">Result</string>
+    <string name="website">Website:</string>
+    <string name="go_to_website">Go to website</string>
+    <string name="history">History</string>
+    <string name="qr_code">QR code details:</string>
+    <string name="copy_text">Copy Text</string>
+    <string name="no_data">No Data</string>
 
 </resources>

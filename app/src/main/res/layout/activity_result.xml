@@ -4,17 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.ResultActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        app:title="@string/result"
+        app:titleCentered="true"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/browser"/>
 
 
     <TextView
-        android:id="@+id/category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
         android:paddingStart="20dp"
-        android:text="@string/history" />
+        android:layout_below="@id/logo"
+        android:id="@+id/category"
+        android:layout_width="match_parent"
+        android:text="@string/website"
+        android:layout_height="wrap_content"/>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
@@ -27,38 +43,28 @@
         android:layout_marginBottom="15dp" />
 
     <TextView
-        android:id="@+id/noDataTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_data"
+        android:id="@+id/result"
         android:textColor="@color/black"
-        android:textSize="22sp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:visibility="gone" />
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:paddingStart="0dp"
-        android:id="@+id/rc"
-        tools:listitem="@layout/item_result"
+        android:textSize="20sp"
         android:layout_below="@id/divider"
+        android:layout_marginTop="20dp"
+        android:paddingStart="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/scanQr"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:text="https://chat.openai.com/"
+        android:layout_height="wrap_content"/>
+
+
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/scanQr"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btn"
+        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/button_widhth"
         android:layout_height="@dimen/button_height"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:layout_marginVertical="20dp"
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"
-        android:text="@string/scan_qr"
+
         android:textColor="@color/white"
         android:textStyle="bold" />
 

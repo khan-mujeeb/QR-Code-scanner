@@ -3,14 +3,21 @@ package com.example.resolutionai.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
 import com.example.resolutionai.account.LoginActivity
-import com.example.resolutionai.account.QRCodeCameraActivity
+import com.example.resolutionai.adapter.ResultAdapter
 import com.example.resolutionai.databinding.ActivityMainBinding
+import com.example.resolutionai.utils.DialogUtils.buildLoadingDialog
 import com.example.resolutionai.utils.FirebaseUtils
+import com.example.resolutionai.viewmodel.ViewModel
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: ViewModel
+    lateinit var alertDialog: AlertDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,9 +25,27 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        goToSignup()
-        subscribeClickEvents()
 
+
+        variableInit()
+        subscribeClickEvents()
+        subscribeUi()
+
+    }
+
+    private fun subscribeUi() {
+        alertDialog.show()
+        viewModel.getResults { task->
+            alertDialog.dismiss()
+            if (task.isNotEmpty()) {
+                binding.noDataTextView.visibility = View.GONE
+                binding.rc.visibility = View.VISIBLE
+                binding.rc.adapter = ResultAdapter(this@MainActivity, task)
+            } else {
+                binding.noDataTextView.visibility = View.VISIBLE
+                binding.rc.visibility = View.GONE
+            }
+        }
     }
 
     private fun subscribeClickEvents() {
@@ -29,10 +54,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        goToSignup()
+    }
     fun goToSignup() {
         if (FirebaseUtils.firebaseUser == null) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
+    }
+
+    private fun variableInit() {
+        alertDialog = buildLoadingDialog(this)
+        viewModel = ViewModelProvider(this)[ViewModel::class.java]
+
     }
 }

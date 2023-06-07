@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -18,14 +18,17 @@
         android:theme="@style/Theme.ResolutionAI"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".account.OTPActivity"
             android:exported="false" />
         <activity
             android:name=".account.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".account.QRCodeCameraActivity"
-            android:exported="false"/>
+            android:name=".activity.QRCodeCameraActivity"
+            android:exported="false" />
         <activity
             android:name=".activity.MainActivity"
             android:exported="true">
@@ -35,9 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode" />
+
+
     </application>
 
 </manifest>

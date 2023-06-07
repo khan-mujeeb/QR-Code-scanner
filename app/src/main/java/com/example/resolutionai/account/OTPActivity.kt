@@ -78,6 +78,7 @@ class OTPActivity : AppCompatActivity() {
                     super.onCodeSent(p0, p1)
                     dialog.dismiss()
                     verificationId = p0
+                    println("mujeeb $verificationId")
                     dialog.dismiss()
                 }
 

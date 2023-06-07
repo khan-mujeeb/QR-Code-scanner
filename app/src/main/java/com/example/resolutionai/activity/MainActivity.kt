@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
-
         variableInit()
         subscribeClickEvents()
         subscribeUi()
@@ -54,20 +52,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        goToSignup()
-    }
-    fun goToSignup() {
-        if (FirebaseUtils.firebaseUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-    }
-
     private fun variableInit() {
         alertDialog = buildLoadingDialog(this)
         viewModel = ViewModelProvider(this)[ViewModel::class.java]
 
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        alertDialog?.dismiss()
+    }
+
 }

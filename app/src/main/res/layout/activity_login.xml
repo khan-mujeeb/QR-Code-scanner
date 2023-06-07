@@ -28,7 +28,7 @@
         android:layout_marginTop="8dp"
         android:text="OTP Verification"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/we_will_send_you_an_one_time_password_on_this_mobile_number"
         android:textAlignment="center"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/numberEt"

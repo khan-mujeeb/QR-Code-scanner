@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.resolutionai.activity.MainActivity
 import com.example.resolutionai.databinding.ActivityLoginBinding
+import com.example.resolutionai.utils.FirebaseUtils
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        goToSignup()
         subscribeCLickEvent()
 
     }
@@ -45,5 +48,12 @@ class LoginActivity : AppCompatActivity() {
             return true
         }
         return false
+    }
+
+    fun goToSignup() {
+        if (FirebaseUtils.firebaseUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 }

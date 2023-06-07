@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:text="OTP Verification"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
         android:layout_marginTop="8dp"
         android:text="Enter OTP send to your number"
         android:textAlignment="center"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/numberTv"
@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:text=""
         android:textAlignment="center"
-        android:textColor="@color/white" />
+        android:textColor="@color/black" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/otpEt"
@@ -68,10 +68,11 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="otp"
             android:background="@null"
+            android:fontFamily="@font/chivo"
             android:inputType="number"
             android:maxLength="6"
-            android:autofillHints="otp"
             android:maxLines="1"
             android:textColor="@color/black" />
 

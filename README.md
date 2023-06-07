@@ -1,5 +1,6 @@
 # Resolution-AI-QR-Code-scanner
 
+#### [download from here](https://drive.google.com/file/d/1QlWTIZwzrmF5PLPc9PXpp9B0GUMuHIpV/view?usp=sharing)
 **This is an android app to scan qr**
 - With Phone Number Authentication
 - Firebase Storage

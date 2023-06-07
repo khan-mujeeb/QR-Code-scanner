@@ -5,6 +5,7 @@ import com.example.resolutionai.data.ScannerResult
 import com.example.resolutionai.utils.Consts.result
 import com.example.resolutionai.utils.FirebaseUtils.database
 import com.example.resolutionai.utils.FirebaseUtils.databaseRef
+import com.example.resolutionai.utils.FirebaseUtils.firebaseAuth
 import com.example.resolutionai.utils.FirebaseUtils.getPhonenumber
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -17,7 +18,7 @@ class Repository {
      */
     fun addResult(data: ScannerResult) {
         val randomkey = database.reference.push().key!!
-        databaseRef.child(getPhonenumber)
+        databaseRef.child(firebaseAuth.currentUser?.phoneNumber.toString())
             .child(randomkey)
             .setValue(data)
     }
@@ -28,7 +29,7 @@ class Repository {
      */
     fun getResults(callback: (List<ScannerResult>) -> Unit) {
         val resultList = mutableListOf<ScannerResult>()
-        databaseRef.child(getPhonenumber).addValueEventListener(object : ValueEventListener {
+        databaseRef.child(firebaseAuth.currentUser?.phoneNumber.toString()).addValueEventListener(object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 resultList.clear()

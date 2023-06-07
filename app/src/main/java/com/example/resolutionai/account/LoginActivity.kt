@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.example.resolutionai.activity.MainActivity
 import com.example.resolutionai.databinding.ActivityLoginBinding
 import com.example.resolutionai.utils.FirebaseUtils
+import com.example.resolutionai.utils.FirebaseUtils.firebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
@@ -51,7 +52,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun goToSignup() {
-        if (FirebaseUtils.firebaseUser != null) {
+        if (firebaseUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

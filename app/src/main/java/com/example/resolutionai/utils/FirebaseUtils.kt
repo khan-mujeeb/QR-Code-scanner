@@ -9,7 +9,7 @@ object FirebaseUtils {
 
     // basic ref
     var firebaseAuth = FirebaseAuth.getInstance()
-    var firebaseUser = firebaseAuth.currentUser
+    var firebaseUser = FirebaseAuth.getInstance().currentUser
 
     val database = Firebase.database
     val databaseRef = database.getReference(result)

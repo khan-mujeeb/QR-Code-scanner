@@ -8,15 +8,14 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.URLUtil
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.resolutionai.R
-import com.example.resolutionai.data.ScannerResult
+import com.example.resolutionai.database.data.QrCodeEntity
 
-class ResultAdapter(private val context: Context, private val resultList: List<ScannerResult>) :
+class ResultAdapter(private val context: Context, private val resultList:  List<QrCodeEntity>) :
     RecyclerView.Adapter<ResultAdapter.ResultViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
@@ -38,11 +37,12 @@ class ResultAdapter(private val context: Context, private val resultList: List<S
         private val logo: ImageView = itemView.findViewById(R.id.Rclogo)
         private val resultTextView: TextView = itemView.findViewById(R.id.Rcdata)
 
-        fun bind(result: ScannerResult) {
-            val data = result.result
+        fun bind(result: QrCodeEntity) {
+            val data = result.qrcodeData
+            val cat = result.category
 
             itemView.setOnClickListener {
-                if (isPlainTextOrUrl(data)) {
+                if (cat == "url") {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
                     context.startActivity(intent)
 
@@ -50,7 +50,7 @@ class ResultAdapter(private val context: Context, private val resultList: List<S
                     copyTextToClipboard(context, data)
                 }
             }
-            if (isPlainTextOrUrl(result.result)) {
+            if (cat == "url") {
                 logo.setImageDrawable(context.getDrawable(R.drawable.browser))
             } else {
                 logo.setImageDrawable(context.getDrawable(R.drawable.baseline_format_color_text_24))
@@ -67,8 +67,5 @@ class ResultAdapter(private val context: Context, private val resultList: List<S
         Toast.makeText(context, "copied", Toast.LENGTH_SHORT).show()
     }
 
-    fun isPlainTextOrUrl(input: String): Boolean {
-        return URLUtil.isValidUrl(input)
-    }
 }
 

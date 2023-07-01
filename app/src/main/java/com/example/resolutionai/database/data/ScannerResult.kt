@@ -1,4 +1,4 @@
-package com.example.resolutionai.data
+package com.example.resolutionai.database.data
 
 data class ScannerResult(
     val result: String = ""

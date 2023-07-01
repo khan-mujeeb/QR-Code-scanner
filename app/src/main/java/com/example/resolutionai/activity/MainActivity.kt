@@ -1,23 +1,28 @@
 package com.example.resolutionai.activity
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.resolutionai.account.LoginActivity
 import com.example.resolutionai.adapter.ResultAdapter
+import com.example.resolutionai.database.viewmodel.DBViewModle
 import com.example.resolutionai.databinding.ActivityMainBinding
 import com.example.resolutionai.utils.DialogUtils.buildLoadingDialog
-import com.example.resolutionai.utils.FirebaseUtils
-import com.example.resolutionai.viewmodel.ViewModel
+import com.google.mlkit.vision.barcode.common.Barcode
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
+import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
+import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 class MainActivity : AppCompatActivity() {
 
+    lateinit var viewMole: DBViewModle
     lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: ViewModel
     lateinit var alertDialog: AlertDialog
+    lateinit var options: GmsBarcodeScannerOptions
+    lateinit var scanner: GmsBarcodeScanner
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,13 +32,13 @@ class MainActivity : AppCompatActivity() {
 
         variableInit()
         subscribeClickEvents()
-        subscribeUi()
+//        subscribeUi()
 
     }
 
     private fun subscribeUi() {
         alertDialog.show()
-        viewModel.getResults { task->
+        viewMole.scannedQr.observe(this) { task ->
             alertDialog.dismiss()
             if (task.isNotEmpty()) {
                 binding.noDataTextView.visibility = View.GONE
@@ -48,18 +53,42 @@ class MainActivity : AppCompatActivity() {
 
     private fun subscribeClickEvents() {
         binding.scanQr.setOnClickListener {
-            startActivity(Intent(this, QRCodeCameraActivity::class.java))
+            scanner.startScan()
+                .addOnSuccessListener {  barcode ->
+                    val intent = Intent(this, ResultActivity::class.java)
+                    intent.putExtra("result", barcode.rawValue)
+                    Toast.makeText(this, "scanned", Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                }
+                .addOnCanceledListener {
+                    Toast.makeText(this, "canceled", Toast.LENGTH_SHORT).show()
+
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "failure", Toast.LENGTH_SHORT).show()
+
+                }
         }
     }
 
     private fun variableInit() {
+
+        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
+
+        options = GmsBarcodeScannerOptions.Builder()
+            .setBarcodeFormats(
+                Barcode.FORMAT_QR_CODE,
+                Barcode.FORMAT_AZTEC
+            ).build()
+
+        scanner = GmsBarcodeScanning.getClient(this, options)
+
         alertDialog = buildLoadingDialog(this)
-        viewModel = ViewModelProvider(this)[ViewModel::class.java]
 
     }
     override fun onDestroy() {
         super.onDestroy()
-        alertDialog?.dismiss()
+        alertDialog.dismiss()
     }
 
 }

@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -17,33 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ResolutionAI"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode_ui"/>
+
         <activity
             android:name=".activity.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".account.OTPActivity"
-            android:exported="false" />
-        <activity
-            android:name=".account.LoginActivity"
-            android:exported="true" >
+            android:name=".activity.MainActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.QRCodeCameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.MainActivity"
-            android:exported="false">
 
         </activity>
 
-        <meta-data
-            android:name="com.google.mlkit.vision.DEPENDENCIES"
-            android:value="barcode" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

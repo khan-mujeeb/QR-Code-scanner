@@ -12,10 +12,15 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import com.example.resolutionai.database.data.QrCodeEntity
+import com.example.resolutionai.database.viewmodel.DBViewModle
 
 
 class ResultActivity : AppCompatActivity() {
+    lateinit var viewMole: DBViewModle
     lateinit var binding: ActivityResultBinding
+    var cat = ""
     var result = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +29,24 @@ class ResultActivity : AppCompatActivity() {
 
         variableInit()
         subscribeUi()
+        addToDb()
         subscribeClickEvents()
 
     }
 
+    private fun addToDb() {
+        viewMole.insert(
+            QrCodeEntity(
+                qrcodeData = result,
+                category = cat
+            )
+        )
+    }
+
+    @SuppressLint("SuspiciousIndentation")
     private fun subscribeClickEvents() {
         binding.btn.setOnClickListener {
-            if (isPlainTextOrUrl(result)) {
+            if (cat == "url") {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
                     startActivity(intent)
 
@@ -68,7 +84,7 @@ class ResultActivity : AppCompatActivity() {
 
     private fun displayBody() {
 
-        if (isPlainTextOrUrl(result)) {
+        if (cat == "url") {
             setUpUrlData()
         } else {
             setUpPlainTextData()
@@ -88,10 +104,16 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun variableInit() {
+
         result = intent.getStringExtra("result")!!
+        cat = isPlainTextOrUrl(result)
+
+        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
+
     }
 
-    fun isPlainTextOrUrl(input: String): Boolean {
-        return URLUtil.isValidUrl(input)
+    fun isPlainTextOrUrl(input: String): String {
+        if(URLUtil.isValidUrl(input)) return "url"
+        else return "text"
     }
 }

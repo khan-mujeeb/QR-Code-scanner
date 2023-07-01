@@ -11,6 +11,9 @@ import com.example.resolutionai.adapter.ResultAdapter
 import com.example.resolutionai.database.viewmodel.DBViewModle
 import com.example.resolutionai.databinding.ActivityMainBinding
 import com.example.resolutionai.utils.DialogUtils.buildLoadingDialog
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.android.gms.tflite.java.TfLite
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -30,9 +33,44 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val moduleInstallClient = ModuleInstall.getClient(this)
+
+        val optionalModuleApi = TfLite.getClient(this)
+        moduleInstallClient
+            .areModulesAvailable(optionalModuleApi)
+            .addOnSuccessListener {
+                if (it.areModulesAvailable()) {
+                    Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "we are setting up your app", Toast.LENGTH_SHORT).show()
+                    val moduleInstallClient = ModuleInstall.getClient(this)
+                    val optionalModuleApi = TfLite.getClient(this)
+                    val moduleInstallRequest =
+                        ModuleInstallRequest.newBuilder()
+                            .addApi(optionalModuleApi)
+                            .build()
+
+
+                    moduleInstallClient
+                        .installModules(moduleInstallRequest)
+                        .addOnSuccessListener {
+                            if (it.areModulesAlreadyInstalled()) {
+                                // Modules are already installed when the request is sent.
+                            }
+                        }
+                        .addOnFailureListener {
+                            // Handle failure…
+                        }
+
+                }
+            }
+            .addOnFailureListener {
+
+            }
+
         variableInit()
         subscribeClickEvents()
-//        subscribeUi()
+        subscribeUi()
 
     }
 
@@ -65,15 +103,14 @@ class MainActivity : AppCompatActivity() {
 
                 }
                 .addOnFailureListener {
-                    Toast.makeText(this, "failure", Toast.LENGTH_SHORT).show()
+                    println("mujeeb $it")
+                    Toast.makeText(this, "failure", Toast.LENGTH_LONG).show()
 
                 }
         }
     }
 
     private fun variableInit() {
-
-        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
 
         options = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(
@@ -82,6 +119,10 @@ class MainActivity : AppCompatActivity() {
             ).build()
 
         scanner = GmsBarcodeScanning.getClient(this, options)
+
+        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
+
+
 
         alertDialog = buildLoadingDialog(this)
 

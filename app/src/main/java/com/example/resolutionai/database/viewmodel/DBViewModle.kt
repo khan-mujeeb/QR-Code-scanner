@@ -21,4 +21,13 @@ class DBViewModle(application: Application): AndroidViewModel(application) {
             repository.insert(qrData)
         }
     }
+
+    /*
+    delete Entery
+    */
+    fun deleteEntery(qrData: QrCodeEntity){
+        viewModelScope.launch {
+            repository.deleteEntry(qrData)
+        }
+    }
 }

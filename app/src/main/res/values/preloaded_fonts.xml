@@ -2,5 +2,6 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/chivo</item>
+        <item>@font/poppins</item>
     </array>
 </resources>

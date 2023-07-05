@@ -1,7 +1,5 @@
 package com.example.resolutionai.adapter
 
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,10 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.resolutionai.R
+import com.example.resolutionai.activity.ResultActivity.Companion.copyTextToClipboard
 import com.example.resolutionai.database.data.QrCodeEntity
+import com.example.resolutionai.R
 
-class ResultAdapter(private val context: Context, private val resultList:  List<QrCodeEntity>) :
+class ResultAdapter(private val context: Context, private val resultList: List<QrCodeEntity>) :
     RecyclerView.Adapter<ResultAdapter.ResultViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResultViewHolder {
@@ -48,24 +47,24 @@ class ResultAdapter(private val context: Context, private val resultList:  List<
 
                 } else {
                     copyTextToClipboard(context, data)
+                    Toast.makeText(context, "copied", Toast.LENGTH_SHORT).show()
+
                 }
             }
             if (cat == "url") {
-                logo.setImageDrawable(context.getDrawable(R.drawable.browser))
+                logo.setImageDrawable(context.getDrawable(R.drawable.browser_new))
             } else {
-                logo.setImageDrawable(context.getDrawable(R.drawable.baseline_format_color_text_24))
+                logo.setImageDrawable(context.getDrawable(R.drawable.plain_text))
             }
 
             resultTextView.text = data
         }
+
+
     }
 
-    fun copyTextToClipboard(context: Context, text: String) {
-        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("Copied Text", text)
-        clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(context, "copied", Toast.LENGTH_SHORT).show()
+    fun getQrCodeAt(position: Int): QrCodeEntity {
+        return resultList[position]
     }
-
 }
 

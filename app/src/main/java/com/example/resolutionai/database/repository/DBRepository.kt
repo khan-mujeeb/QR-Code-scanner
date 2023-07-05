@@ -17,6 +17,10 @@ class DBRepository(private val dao: QrCodeDao) {
     suspend fun insert(qrData: QrCodeEntity) {
         dao.insert(qrData)
     }
-
+    
+    /*
+    deleteEntry
+    */
+    suspend fun deleteEntry(data: QrCodeEntity) = dao.deleteEntry(data)
 
 }

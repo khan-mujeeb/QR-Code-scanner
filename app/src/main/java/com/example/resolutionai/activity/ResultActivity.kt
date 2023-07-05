@@ -5,9 +5,7 @@ import android.content.ClipData
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.resolutionai.databinding.ActivityResultBinding
 import android.webkit.URLUtil
-import com.example.resolutionai.R
 import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
@@ -15,6 +13,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.example.resolutionai.database.data.QrCodeEntity
 import com.example.resolutionai.database.viewmodel.DBViewModle
+import com.example.resolutionai.R
+import com.example.resolutionai.databinding.ActivityResultBinding
 
 
 class ResultActivity : AppCompatActivity() {
@@ -27,11 +27,14 @@ class ResultActivity : AppCompatActivity() {
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+    }
+
+    override fun onStart() {
+        super.onStart()
         variableInit()
         subscribeUi()
         addToDb()
         subscribeClickEvents()
-
     }
 
     private fun addToDb() {
@@ -45,23 +48,33 @@ class ResultActivity : AppCompatActivity() {
 
     @SuppressLint("SuspiciousIndentation")
     private fun subscribeClickEvents() {
+
         binding.btn.setOnClickListener {
             if (cat == "url") {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
-                    startActivity(intent)
+                startActivity(intent)
 
             } else {
                 copyTextToClipboard(this@ResultActivity, result)
+                Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
+
             }
+        }
+
+        binding.share.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, result)
+            startActivity(Intent.createChooser(intent, "Share via"))
+        }
+
+        binding.result.setOnLongClickListener {
+            copyTextToClipboard(this, result)
+            Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
+            true
         }
     }
 
-    fun copyTextToClipboard(context: Context, text: String) {
-        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clipData = ClipData.newPlainText("Copied Text", text)
-        clipboardManager.setPrimaryClip(clipData)
-        Toast.makeText(this, "copied", Toast.LENGTH_SHORT).show()
-    }
 
     @SuppressLint("SetTextI18n")
     private fun subscribeUi() {
@@ -92,13 +105,13 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun setUpPlainTextData() {
-        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.baseline_format_color_text_24))
+        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.plain_text))
         binding.category.text = getString(R.string.qr_code)
         binding.btn.text = getString(R.string.copy_text)
     }
 
     private fun setUpUrlData() {
-        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.browser))
+        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.browser_new))
         binding.category.text = getString(R.string.website)
         binding.btn.text = getString(R.string.go_to_website)
     }
@@ -113,7 +126,16 @@ class ResultActivity : AppCompatActivity() {
     }
 
     fun isPlainTextOrUrl(input: String): String {
-        if(URLUtil.isValidUrl(input)) return "url"
+        if (URLUtil.isValidUrl(input)) return "url"
         else return "text"
+    }
+
+    companion object {
+        fun copyTextToClipboard(context: Context, text: String) {
+            val clipboardManager =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipData = ClipData.newPlainText("Copied Text", text)
+            clipboardManager.setPrimaryClip(clipData)
+        }
     }
 }

@@ -10,13 +10,14 @@
         android:layout_margin="10dp"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/browser"
+        android:src="@drawable/browser_new"
         />
 
     <TextView
         android:textColor="@color/black"
         android:id="@+id/Rcdata"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:maxLines="2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="https://openai.com/"/>

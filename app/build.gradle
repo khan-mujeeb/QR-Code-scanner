@@ -55,13 +55,10 @@ dependencies {
 
     // google qr code
     implementation 'com.google.android.gms:play-services-code-scanner:16.0.0'
-    implementation 'com.google.android.gms:play-services-base:18.2.0'
-    implementation 'com.google.android.gms:play-services-tflite-java:16.1.0'
 
     // room db
 
     def room_version = "2.5.2"
-    implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
@@ -72,6 +69,10 @@ dependencies {
 
     // lifecycleScope:
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+
+    // animation
+    implementation 'com.github.khan-mujeeb:Button-Morphing-Animation:1.0.2'
+
 
 
 }

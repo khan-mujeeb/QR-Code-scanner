@@ -16,6 +16,13 @@
         android:paddingStart="20dp"
         android:text="@string/history" />
 
+
+    <ProgressBar
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
         android:layout_width="match_parent"
@@ -32,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_data"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:visibility="gone" />
@@ -49,13 +56,17 @@
         android:layout_above="@id/scanQr"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
+
+
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/scanQr"
         android:layout_width="@dimen/button_widhth"
         android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="50dp"
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"
         android:text="@string/scan_qr"

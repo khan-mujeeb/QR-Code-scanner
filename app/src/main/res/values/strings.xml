@@ -1,15 +1,15 @@
 <resources>
-    <string name="app_name">Resolution AI</string>
-    <string name="we_will_send_you_an_one_time_password_on_this_mobile_number">We will send you an One Time Password on this Mobile Number</string>
-    <string name="enter_your_phone_number">Enter your phone number</string>
-    <string name="get_otp">Get OTP</string>
+    <string name="app_name">QR Scanner</string>
     <string name="scan_qr">Scan QR</string>
     <string name="result">Result</string>
     <string name="website">Website:</string>
     <string name="go_to_website">Go to website</string>
     <string name="history">History</string>
-    <string name="qr_code">QR code details:</string>
+    <string name="qr_code">Plain Text:</string>
     <string name="copy_text">Copy Text</string>
     <string name="no_data">No Data</string>
+    <string name="copied">copied</string>
+    <string name="deleted">deleted</string>
+    <string name="descp" >Effortless QR Code Scanning with Enhanced Privacy</string>
 
 </resources>

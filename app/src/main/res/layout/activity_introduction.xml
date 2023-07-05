@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".activity.IntroductionActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/descp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="23sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🔒"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold" />
+
+
+
+
+    <ImageView
+        android:layout_marginVertical="30dp"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:src="@drawable/qr_code" />
+
+    <com.example.button_morphing.customview.MorphButton
+
+        android:id="@+id/btn"
+        android:layout_width="@dimen/button_widhth"
+        android:layout_height="45dp" />
+</LinearLayout>

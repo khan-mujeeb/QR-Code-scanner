@@ -18,13 +18,13 @@
         android:layout_marginTop="30dp"
         android:layout_below="@id/toolbar"
         android:layout_centerHorizontal="true"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/browser"/>
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/browser_new"/>
 
 
     <TextView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:paddingStart="20dp"
         android:layout_below="@id/logo"
         android:id="@+id/category"
@@ -42,18 +42,33 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp" />
 
+
+
     <TextView
         android:id="@+id/result"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
+        android:maxLines="5"
         android:layout_below="@id/divider"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:paddingStart="30dp"
         android:layout_width="match_parent"
         android:text="https://chat.openai.com/"
         android:layout_height="wrap_content"/>
 
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/share"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/button_widhth"
+        android:layout_height="@dimen/button_height"
+        android:background="@drawable/ui_btn_bg"
+        android:padding="10dp"
+        android:text="Share"
+        android:layout_above="@id/btn"
+        android:layout_marginVertical="15dp"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:layout_alignParentBottom="true"
@@ -61,7 +76,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="@dimen/button_widhth"
         android:layout_height="@dimen/button_height"
-        android:layout_marginVertical="20dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"
 

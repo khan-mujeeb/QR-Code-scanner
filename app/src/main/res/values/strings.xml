@@ -10,6 +10,8 @@
     <string name="no_data">No Data</string>
     <string name="copied">copied</string>
     <string name="deleted">deleted</string>
-    <string name="descp" >Effortless QR Code Scanning with Enhanced Privacy</string>
+    <string name="descp">Effortless QR Code Scanning with Enhanced Privacy</string>
+    <string name="error_meesage">We are providing services for scanning codes without requiring your camera access and preserving user privacy. This is accomplished by delegating the task of scanning the code to Google Play services and returning only the scan results to your app</string>
+    <string name="guide">Kindly clear your play services data and restart the app</string>
 
 </resources>

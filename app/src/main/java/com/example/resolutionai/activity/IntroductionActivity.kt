@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.example.button_morphing.customview.MorphButton
-import com.example.resolutionai.R
+
 import com.example.resolutionai.databinding.ActivityIntroductionBinding
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
@@ -22,36 +21,25 @@ class IntroductionActivity : AppCompatActivity() {
         binding = ActivityIntroductionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setUpScanner()
+
         variableInit()
         subscribeUi()
         subscribeOnClickEvents()
-
 
     }
 
     private fun subscribeOnClickEvents() {
         binding.btn.setOnClickListener {
-            setUpScanner()
-            binding.btn.setUIState(MorphButton.UIState.Loading)
-
-
-
             Handler().postDelayed({
                 startActivity(Intent(this@IntroductionActivity, MainActivity::class.java))
                 finish()
-            }, 2000)
+            }, 500)
         }
     }
 
     private fun subscribeUi() {
         binding.btn.text = "Setup Secure Environment"
-        binding.btn.toBgColor = getColor(R.color.sea_green)
-        binding.btn.fromBgColor = getColor(R.color.sea_green)
-        binding.btn.toTextColor = getColor(R.color.white)
-        binding.btn.fromTextColor = getColor(R.color.white)
-
-
-
     }
 
     private fun setUpScanner() {

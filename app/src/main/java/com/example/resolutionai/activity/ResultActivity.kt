@@ -10,6 +10,7 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.resolutionai.database.data.QrCodeEntity
 import com.example.resolutionai.database.viewmodel.DBViewModle
@@ -105,15 +106,23 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun setUpPlainTextData() {
-        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.plain_text))
-        binding.category.text = getString(R.string.qr_code)
-        binding.btn.text = getString(R.string.copy_text)
+        binding.apply {
+            logo.setImageDrawable(resources.getDrawable(R.drawable.plain_text))
+            category.text = getString(R.string.qr_code)
+            btn.text = getString(R.string.copy_text)
+            result.setTextColor(ContextCompat.getColor(this@ResultActivity, R.color.black))
+        }
+
+
     }
 
     private fun setUpUrlData() {
-        binding.logo.setImageDrawable(resources.getDrawable(R.drawable.browser_new))
-        binding.category.text = getString(R.string.website)
-        binding.btn.text = getString(R.string.go_to_website)
+        binding.apply {
+            logo.setImageDrawable(resources.getDrawable(R.drawable.browser_new))
+            category.text = getString(R.string.website)
+            btn.text = getString(R.string.go_to_website)
+            result.setTextColor(ContextCompat.getColor(this@ResultActivity, R.color.midnight_blue))
+        }
     }
 
     private fun variableInit() {

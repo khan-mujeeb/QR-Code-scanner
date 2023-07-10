@@ -36,9 +36,12 @@
         android:layout_height="280dp"
         android:src="@drawable/qr_code" />
 
-    <com.example.button_morphing.customview.MorphButton
-
+    <androidx.appcompat.widget.AppCompatButton
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:text="Let's Go"
+        android:background="@drawable/ui_btn_bg"
         android:id="@+id/btn"
         android:layout_width="@dimen/button_widhth"
-        android:layout_height="45dp" />
+        android:layout_height="55dp" />
 </LinearLayout>

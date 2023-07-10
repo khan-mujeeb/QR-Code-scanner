@@ -70,9 +70,6 @@ dependencies {
     // lifecycleScope:
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
 
-    // animation
-    implementation 'com.github.khan-mujeeb:Button-Morphing-Animation:1.0.2'
-
 
 
 }

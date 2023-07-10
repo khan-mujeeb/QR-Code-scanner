@@ -15,6 +15,9 @@
         android:theme="@style/Theme.ResolutionAI"
         tools:targetApi="s">
         <activity
+            android:name=".activity.ErrorActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.IntroductionActivity"
             android:exported="false" />
 

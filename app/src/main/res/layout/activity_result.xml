@@ -47,11 +47,12 @@
     <TextView
         android:id="@+id/result"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="17sp"
         android:maxLines="5"
         android:layout_below="@id/divider"
         android:layout_marginTop="30dp"
         android:paddingStart="30dp"
+        android:paddingEnd="30dp"
         android:layout_width="match_parent"
         android:text="https://chat.openai.com/"
         android:layout_height="wrap_content"/>

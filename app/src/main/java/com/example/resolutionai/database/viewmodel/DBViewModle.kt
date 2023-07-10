@@ -3,10 +3,12 @@ package com.example.resolutionai.database.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.resolutionai.database.AppDatabase
 import com.example.resolutionai.database.data.QrCodeEntity
 import com.example.resolutionai.database.repository.DBRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class DBViewModle(application: Application): AndroidViewModel(application) {
@@ -30,4 +32,15 @@ class DBViewModle(application: Application): AndroidViewModel(application) {
             repository.deleteEntry(qrData)
         }
     }
+
+    /*
+    delete All entries
+     */
+        fun deleteAllEntries() {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.deleteAllEntries()
+            }
+        }
+
+
 }

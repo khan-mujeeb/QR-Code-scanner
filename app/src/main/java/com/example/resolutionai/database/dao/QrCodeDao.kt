@@ -19,4 +19,7 @@ interface QrCodeDao {
 
     @Delete
     suspend fun deleteEntry(qrData: QrCodeEntity)
+
+    @Query("DELETE FROM qrcode_table")
+    fun deleteAllEntries()
 }

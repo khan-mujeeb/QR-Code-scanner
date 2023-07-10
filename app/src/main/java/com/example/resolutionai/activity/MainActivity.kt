@@ -110,10 +110,12 @@ class MainActivity : AppCompatActivity() {
             binding.loading.visibility = View.INVISIBLE
             adapter = ResultAdapter(this@MainActivity, task)
             if (task.isNotEmpty()) {
+                binding.clearAll.visibility = View.VISIBLE
                 binding.noDataTextView.visibility = View.GONE
                 binding.rc.visibility = View.VISIBLE
                 binding.rc.adapter = adapter
             } else {
+                binding.clearAll.visibility = View.GONE
                 binding.noDataTextView.visibility = View.VISIBLE
                 binding.rc.visibility = View.GONE
             }
@@ -121,8 +123,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun subscribeClickEvents() {
+
+        // scan qr code
         binding.scanQr.setOnClickListener {
             scan()
+        }
+
+        // delete all entries
+        binding.clearAll.setOnClickListener {
+            viewMole.deleteAllEntries()
+            Toast.makeText(this, "all data deleted", Toast.LENGTH_SHORT).show()
+
         }
 
 
@@ -149,10 +160,8 @@ class MainActivity : AppCompatActivity() {
             .addOnFailureListener {
                 println("mujeeb $it")
 
-
                 Toast.makeText(this, "failure", Toast.LENGTH_LONG).show()
-
-
+                startActivity(Intent(this, ErrorActivity::class.java))
             }
     }
 

@@ -44,13 +44,23 @@
         android:gravity="center"
         android:visibility="gone" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/clearAll"
+        android:layout_marginEnd="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/divider"
+        android:text="Clear All"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"
         android:paddingStart="0dp"
         android:id="@+id/rc"
         tools:listitem="@layout/item_result"
-        android:layout_below="@id/divider"
+        android:layout_below="@id/clearAll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/scanQr"

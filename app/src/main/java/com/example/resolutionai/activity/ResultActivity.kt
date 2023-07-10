@@ -28,11 +28,12 @@ class ResultActivity : AppCompatActivity() {
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        variableInit()
+
     }
 
     override fun onStart() {
         super.onStart()
-        variableInit()
         subscribeUi()
         addToDb()
         subscribeClickEvents()
@@ -63,7 +64,7 @@ class ResultActivity : AppCompatActivity() {
         }
 
         binding.share.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
+            val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, result)
             startActivity(Intent.createChooser(intent, "Share via"))

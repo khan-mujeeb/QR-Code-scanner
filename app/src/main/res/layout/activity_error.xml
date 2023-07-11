@@ -4,66 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="15dp"
     android:gravity="center"
-    tools:context=".activity.ErrorActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="15dp"
+    tools:context=".activity.ErrorActivity">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/baseline_error_24"/>
+        android:src="@drawable/baseline_error_24" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:textAlignment="center"
         android:text="@string/error_meesage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textAlignment="center" />
 
     <TextView
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:layout_marginTop="70dp"
-
-        android:textSize="16sp"
         android:text="@string/guide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:textSize="16sp" />
 
     <TextView
-        android:textColor="@color/black"
-        android:layout_marginTop="15dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Go to :-"/>
+        android:layout_marginTop="15dp"
+        android:text="Go to :-"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="5dp"
+        android:text="Settings > Apps > Google Play Service > Storage"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:text="Settings > Apps > Google Play Service > Storage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"/>
+        android:textStyle="bold" />
 
     <TextView
-        android:layout_marginTop="15dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="or"/>
+        android:layout_marginTop="15dp"
+        android:text="or"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/goToSetting"
-        android:layout_marginTop="15dp"
         android:layout_width="300dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
         android:layout_height="55dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/ui_btn_bg"
-        android:text="Go To Settings"/>
+        android:text="Go To Settings"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </LinearLayout>

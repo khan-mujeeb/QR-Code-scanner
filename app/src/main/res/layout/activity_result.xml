@@ -9,28 +9,28 @@
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         app:title="@string/result"
-        app:titleCentered="true"
-        android:layout_height="?attr/actionBarSize"/>
+        app:titleCentered="true" />
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_marginTop="30dp"
-        android:layout_below="@id/toolbar"
-        android:layout_centerHorizontal="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/browser_new"/>
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/browser_new" />
 
 
     <TextView
-        android:layout_marginTop="25dp"
-        android:paddingStart="20dp"
-        android:layout_below="@id/logo"
         android:id="@+id/category"
         android:layout_width="match_parent"
-        android:text="@string/website"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo"
+        android:layout_marginTop="25dp"
+        android:paddingStart="20dp"
+        android:text="@string/website" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider"
@@ -43,40 +43,39 @@
         android:layout_marginBottom="15dp" />
 
 
-
     <TextView
         android:id="@+id/result"
-        android:textColor="@color/black"
-        android:textSize="17sp"
-        android:maxLines="5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/divider"
         android:layout_marginTop="30dp"
+        android:maxLines="5"
         android:paddingStart="30dp"
         android:paddingEnd="30dp"
-        android:layout_width="match_parent"
         android:text="https://chat.openai.com/"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/black"
+        android:textSize="17sp" />
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/share"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/button_widhth"
         android:layout_height="@dimen/button_height"
+        android:layout_above="@id/btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="15dp"
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"
         android:text="Share"
-        android:layout_above="@id/btn"
-        android:layout_marginVertical="15dp"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_alignParentBottom="true"
         android:id="@+id/btn"
-        android:layout_centerHorizontal="true"
         android:layout_width="@dimen/button_widhth"
         android:layout_height="@dimen/button_height"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"

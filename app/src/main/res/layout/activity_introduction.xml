@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/descp"
-        android:textColor="@color/black"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="23sp"
         android:textStyle="bold" />
 
@@ -28,20 +28,18 @@
         android:textStyle="bold" />
 
 
-
-
     <ImageView
-        android:layout_marginVertical="30dp"
         android:layout_width="280dp"
         android:layout_height="280dp"
+        android:layout_marginVertical="30dp"
         android:src="@drawable/qr_code" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:text="Let's Go"
-        android:background="@drawable/ui_btn_bg"
         android:id="@+id/btn"
         android:layout_width="@dimen/button_widhth"
-        android:layout_height="55dp" />
+        android:layout_height="55dp"
+        android:background="@drawable/ui_btn_bg"
+        android:text="Let's Go"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 </LinearLayout>

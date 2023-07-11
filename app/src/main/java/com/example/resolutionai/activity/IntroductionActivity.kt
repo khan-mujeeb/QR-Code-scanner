@@ -21,9 +21,9 @@ class IntroductionActivity : AppCompatActivity() {
         binding = ActivityIntroductionBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        variableInit()
         setUpScanner()
 
-        variableInit()
         subscribeUi()
         subscribeOnClickEvents()
 

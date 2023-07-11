@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
+    android:layout_height="wrap_content"
     android:gravity="center_vertical"
-    android:layout_height="wrap_content">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/Rclogo"
-        android:layout_margin="10dp"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/browser_new"
-        />
+        android:layout_margin="10dp"
+        android:src="@drawable/browser_new" />
 
     <TextView
-        android:textColor="@color/black"
         android:id="@+id/Rcdata"
-        android:textSize="16sp"
-        android:maxLines="2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="https://openai.com/"/>
+        android:maxLines="2"
+        android:text="https://openai.com/"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 </LinearLayout>

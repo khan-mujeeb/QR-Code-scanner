@@ -37,37 +37,34 @@
         android:id="@+id/noDataTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
         android:text="@string/no_data"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
         android:visibility="gone" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/clearAll"
-        android:layout_marginEnd="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@id/divider"
-        android:text="Clear All"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:text="Clear All"
+        android:visibility="gone" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:paddingStart="0dp"
         android:id="@+id/rc"
-        tools:listitem="@layout/item_result"
-        android:layout_below="@id/clearAll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/scanQr"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-
-
+        android:layout_below="@id/clearAll"
+        android:paddingStart="0dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_result" />
 
 
     <androidx.appcompat.widget.AppCompatButton

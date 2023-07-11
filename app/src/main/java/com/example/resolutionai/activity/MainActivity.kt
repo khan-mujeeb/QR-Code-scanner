@@ -15,13 +15,17 @@ import com.example.resolutionai.R
 import com.example.resolutionai.adapter.ResultAdapter
 import com.example.resolutionai.database.viewmodel.DBViewModle
 import com.example.resolutionai.databinding.ActivityMainBinding
+import com.google.android.gms.common.moduleinstall.ModuleInstall
+import com.google.android.gms.common.moduleinstall.ModuleInstallClient
+import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
+import com.google.android.gms.tflite.client.TfLiteClient
+import com.google.android.gms.tflite.java.TfLite
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 
 class MainActivity : AppCompatActivity() {
-
     lateinit var viewMole: DBViewModle
     lateinit var binding: ActivityMainBinding
     lateinit var options: GmsBarcodeScannerOptions
@@ -30,23 +34,59 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter: ResultAdapter
     private val PREF_NAME = "qr_code_pref"
     private val FIRST_TIME_VISTOR = "first_timer"
+    lateinit var moduleInstallClient: ModuleInstallClient
+    lateinit var  optionalModuleApi: TfLiteClient
+    lateinit var moduleInstallRequest:  ModuleInstallRequest
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        checkForFirstTimeUser()
+
     }
 
     override fun onStart() {
         super.onStart()
 
 
-        checkForFirstTimeUser()
         variableInit()
         subscribeClickEvents()
         subscribeUi()
+        checkForModule()
+    }
 
+    private fun checkForModule() {
+        moduleInstallClient
+            .areModulesAvailable(optionalModuleApi)
+            .addOnSuccessListener {
+                if (it.areModulesAvailable()) {
+                    println("already availabe")
+
+                } else {
+                    sendModuleInstallRequest()
+                }
+            }
+            .addOnFailureListener {
+                // Handle failure...
+            }
+    }
+
+    private fun sendModuleInstallRequest() {
+        moduleInstallClient
+            .installModules(moduleInstallRequest)
+            .addOnSuccessListener {
+                if (it.areModulesAlreadyInstalled()) {
+                    println("already installed")
+                }
+            }
+            .addOnFailureListener {
+                println("installation failed")
+
+            }
     }
 
     private fun checkForFirstTimeUser() {
@@ -63,15 +103,27 @@ class MainActivity : AppCompatActivity() {
         options = GmsBarcodeScannerOptions.Builder()
             .setBarcodeFormats(
                 Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_AZTEC
+                Barcode.FORMAT_AZTEC,
+                Barcode.FORMAT_EAN_13,
+                Barcode.FORMAT_EAN_8,
+                Barcode.FORMAT_UPC_A
             ).build()
+
+
+        optionalModuleApi = TfLite.getClient(this)
+        moduleInstallRequest =
+            ModuleInstallRequest.newBuilder()
+                .addApi(optionalModuleApi)
+                .build()
+
+        moduleInstallClient = ModuleInstall.getClient(this)
+        optionalModuleApi = TfLite.getClient(this)
 
         scanner = GmsBarcodeScanning.getClient(this@MainActivity, options)
         viewMole = ViewModelProvider(this)[DBViewModle::class.java]
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     }
-
 
 
     private fun subscribeUi() {

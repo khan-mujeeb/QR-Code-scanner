@@ -14,6 +14,10 @@ class ErrorActivity : AppCompatActivity() {
         binding = ActivityErrorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        subscribeOnClickListner()
+    }
+
+    private fun subscribeOnClickListner() {
         binding.goToSetting.setOnClickListener {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.data = android.net.Uri.parse("package:com.google.android.gms")

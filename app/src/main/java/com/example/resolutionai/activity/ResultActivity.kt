@@ -136,6 +136,7 @@ class ResultActivity : AppCompatActivity() {
     }
 
     fun isPlainTextOrUrl(input: String): String {
+
         if (URLUtil.isValidUrl(input)) return "url"
         else return "text"
     }

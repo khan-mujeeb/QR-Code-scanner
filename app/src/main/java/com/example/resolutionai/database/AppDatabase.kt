@@ -15,9 +15,9 @@ abstract class AppDatabase : RoomDatabase() {
 
         @Volatile
         var INSTANCE: AppDatabase? = null
-        fun getDataBase(context: Context): AppDatabase{
+        fun getDataBase(context: Context): AppDatabase {
             val tempInstance = INSTANCE
-            if (tempInstance!=null)
+            if (tempInstance != null)
                 return tempInstance
 
             synchronized(this) {

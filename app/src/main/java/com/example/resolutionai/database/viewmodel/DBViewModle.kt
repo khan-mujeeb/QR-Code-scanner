@@ -11,7 +11,7 @@ import com.example.resolutionai.database.repository.DBRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DBViewModle(application: Application): AndroidViewModel(application) {
+class DBViewModle(application: Application) : AndroidViewModel(application) {
 
     val dao = AppDatabase.getDataBase(application).qrCodeDao()
     private val repository = DBRepository(dao)
@@ -27,7 +27,7 @@ class DBViewModle(application: Application): AndroidViewModel(application) {
     /*
     delete Entery
     */
-    fun deleteEntery(qrData: QrCodeEntity){
+    fun deleteEntery(qrData: QrCodeEntity) {
         viewModelScope.launch {
             repository.deleteEntry(qrData)
         }
@@ -36,11 +36,11 @@ class DBViewModle(application: Application): AndroidViewModel(application) {
     /*
     delete All entries
      */
-        fun deleteAllEntries() {
-            viewModelScope.launch(Dispatchers.IO) {
-                repository.deleteAllEntries()
-            }
+    fun deleteAllEntries() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllEntries()
         }
+    }
 
 
 }

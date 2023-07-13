@@ -1,4 +1,4 @@
-package com.example.resolutionai.activity
+package com.khandev.qrcodescanner.activity
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -12,10 +12,10 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.resolutionai.database.data.QrCodeEntity
-import com.example.resolutionai.database.viewmodel.DBViewModle
-import com.example.resolutionai.R
-import com.example.resolutionai.databinding.ActivityResultBinding
+import com.khandev.qrcodescanner.R
+import com.khandev.qrcodescanner.database.data.QrCodeEntity
+import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
+import com.khandev.qrcodescanner.databinding.ActivityResultBinding
 
 
 class ResultActivity : AppCompatActivity() {

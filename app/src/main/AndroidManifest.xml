@@ -15,10 +15,10 @@
         android:theme="@style/Theme.ResolutionAI"
         tools:targetApi="s">
         <activity
-            android:name=".activity.ErrorActivity"
+            android:name="com.khandev.qrcodescanner.activity.ErrorActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.IntroductionActivity"
+            android:name="com.khandev.qrcodescanner.activity.IntroductionActivity"
             android:exported="false" />
 
         <meta-data
@@ -26,10 +26,10 @@
             android:value="barcode_ui" />
 
         <activity
-            android:name=".activity.ResultActivity"
+            android:name="com.khandev.qrcodescanner.activity.ResultActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.khandev.qrcodescanner.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

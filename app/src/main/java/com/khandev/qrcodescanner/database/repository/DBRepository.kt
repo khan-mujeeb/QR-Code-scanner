@@ -1,9 +1,8 @@
-package com.example.resolutionai.database.repository
+package com.khandev.qrcodescanner.database.repository
 
 import androidx.lifecycle.LiveData
-import com.example.resolutionai.database.dao.QrCodeDao
-import com.example.resolutionai.database.data.QrCodeEntity
-import kotlinx.coroutines.Dispatchers
+import com.khandev.qrcodescanner.database.dao.QrCodeDao
+import com.khandev.qrcodescanner.database.data.QrCodeEntity
 
 class DBRepository(private val dao: QrCodeDao) {
 

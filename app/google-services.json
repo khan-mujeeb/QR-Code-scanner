@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:226362332438:android:bb536f26d442eae4f3ec37",
         "android_client_info": {
-          "package_name": "com.example.resolutionai"
+          "package_name": "com.khandev.qrcodescanner"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "226362332438-tnte736tnimbqmkkjia0vijit4nje2a5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.resolutionai",
+            "package_name": "com.khandev.qrcodescanner",
             "certificate_hash": "9a3660d86dd5d279b616424a53167331495114b3"
           }
         },

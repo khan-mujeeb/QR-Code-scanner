@@ -1,11 +1,10 @@
-package com.example.resolutionai.activity
+package com.khandev.qrcodescanner.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import com.example.resolutionai.R
-import com.example.resolutionai.databinding.ActivityErrorBinding
+import com.khandev.qrcodescanner.databinding.ActivityErrorBinding
 
 class ErrorActivity : AppCompatActivity() {
     lateinit var binding: ActivityErrorBinding

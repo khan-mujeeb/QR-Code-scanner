@@ -1,11 +1,11 @@
-package com.example.resolutionai.database.dao
+package com.khandev.qrcodescanner.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.resolutionai.database.data.QrCodeEntity
+import com.khandev.qrcodescanner.database.data.QrCodeEntity
 
 @Dao
 interface QrCodeDao {

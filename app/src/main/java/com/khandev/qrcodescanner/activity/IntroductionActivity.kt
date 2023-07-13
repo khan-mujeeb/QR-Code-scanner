@@ -1,15 +1,14 @@
-package com.example.resolutionai.activity
+package com.khandev.qrcodescanner.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 
-import com.example.resolutionai.databinding.ActivityIntroductionBinding
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import com.khandev.qrcodescanner.databinding.ActivityIntroductionBinding
 
 class IntroductionActivity : AppCompatActivity() {
     lateinit var binding: ActivityIntroductionBinding

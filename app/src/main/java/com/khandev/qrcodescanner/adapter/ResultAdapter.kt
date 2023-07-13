@@ -1,4 +1,4 @@
-package com.example.resolutionai.adapter
+package com.khandev.qrcodescanner.adapter
 
 import android.content.Context
 import android.content.Intent
@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.example.resolutionai.activity.ResultActivity.Companion.copyTextToClipboard
-import com.example.resolutionai.database.data.QrCodeEntity
-import com.example.resolutionai.R
+import com.khandev.qrcodescanner.activity.ResultActivity.Companion.copyTextToClipboard
+import com.khandev.qrcodescanner.database.data.QrCodeEntity
+import com.khandev.qrcodescanner.R
 
 class ResultAdapter(private val context: Context, private val resultList: List<QrCodeEntity>) :
     RecyclerView.Adapter<ResultAdapter.ResultViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.resolutionai
+package com.khandev.qrcodescanner
 
 import org.junit.Test
 

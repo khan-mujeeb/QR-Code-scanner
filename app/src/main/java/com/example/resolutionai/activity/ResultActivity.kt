@@ -23,6 +23,7 @@ class ResultActivity : AppCompatActivity() {
     lateinit var binding: ActivityResultBinding
     var cat = ""
     var result = ""
+    var count = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
@@ -35,8 +36,11 @@ class ResultActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         subscribeUi()
-        addToDb()
         subscribeClickEvents()
+        if (count == 0) {
+            addToDb()
+            count++
+        }
     }
 
     private fun addToDb() {
@@ -127,7 +131,7 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun variableInit() {
-
+        count = intent.getIntExtra("count", -1)!!
         result = intent.getStringExtra("result")!!
         cat = isPlainTextOrUrl(result)
 

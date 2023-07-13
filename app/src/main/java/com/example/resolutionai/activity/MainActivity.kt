@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.resolutionai.R
 import com.example.resolutionai.adapter.ResultAdapter
+import com.example.resolutionai.database.data.QrCodeEntity
 import com.example.resolutionai.database.viewmodel.DBViewModle
 import com.example.resolutionai.databinding.ActivityMainBinding
 import com.google.android.gms.common.moduleinstall.ModuleInstall
@@ -202,6 +203,7 @@ class MainActivity : AppCompatActivity() {
 
                 val intent = Intent(this, ResultActivity::class.java)
                 intent.putExtra("result", barcode.rawValue)
+                intent.putExtra("count", 0)
                 Toast.makeText(this, "scanned", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             }
@@ -220,5 +222,7 @@ class MainActivity : AppCompatActivity() {
     private fun isFirstTimeVistor(sharedPref: SharedPreferences?): Boolean {
         return sharedPref!!.getBoolean(FIRST_TIME_VISTOR, true)
     }
+
+
 
 }

@@ -22,7 +22,6 @@ class IntroductionActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         variableInit()
-        setUpScanner()
 
         subscribeUi()
         subscribeOnClickEvents()
@@ -31,10 +30,11 @@ class IntroductionActivity : AppCompatActivity() {
 
     private fun subscribeOnClickEvents() {
         binding.btn.setOnClickListener {
-            Handler().postDelayed({
-                startActivity(Intent(this@IntroductionActivity, MainActivity::class.java))
-                finish()
-            }, 500)
+
+            startActivity(Intent(this@IntroductionActivity, MainActivity::class.java))
+            finish()
+            setUpScanner()
+
         }
     }
 

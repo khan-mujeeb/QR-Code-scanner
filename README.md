@@ -49,7 +49,7 @@ Using the QR Code Scanner app is straightforward:
 
 ## Contributing
 
-Contributions to the QR Code Scanner app are welcome. If you would like to contribute, please follow these steps:
+Contributions to the QR Code Scanner app are welcome. If you would like to contribute, please follow these steps or check [Contributing Guidelines](https://github.com/khan-mujeeb/QR-Code-scanner/blob/product/contribution.md):
 
 1. Fork the repository.
 2. Create a new branch for your feature or bug fix.

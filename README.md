@@ -57,6 +57,11 @@ Contributions to the QR Code Scanner app are welcome. If you would like to contr
 4. Commit your changes and push them to your forked repository.
 5. Submit a pull request, explaining your changes and the rationale behind them.
 
+## Discuss 💬
+
+Have any questions, doubts or want to present your opinions, views? You're always welcome.
+You can [start discussions](https://github.com/khan-mujeeb/QR-Code-scanner/discussions).
+
 ## Contact
 
 If you have any questions or encounter any issues, please contact [mujeebkhan1831@gmail.com]. We appreciate your feedback and support!

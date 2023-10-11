@@ -15,7 +15,7 @@
 
 <img src="https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/afa2c566-b6b8-46b5-b949-81d087bdd66b" height="400" width="190"/>
 <img src="https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/11cdbf7e-76a7-4bf8-8908-f5234f11938d" height="400" width="190"/>
-<img src="https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/93e28c38-17a0-4c1e-9c40-0bb9e04b6a2f" height="400" width="190"/>
+
 <img src="https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/4d7797df-3d0c-46f5-9f69-ac79ab0cf223" height="400" width="190"/>
 <img src="https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/89f369f6-5317-4933-99a5-d73f88bd84ad" height="400" width="190"/>
 

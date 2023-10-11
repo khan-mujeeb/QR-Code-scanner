@@ -1,12 +1,13 @@
 # QR-Code-scanner
 
 **A simple and easy-to-use QR code scanner app built with Kotlin, Room DB, coroutines, and Google Code Scanner. The app allows users to scan QR codes using their phone's camera and provides a fast and secure scanning experience.**
-
+<div align="center">
 <a href="https://play.google.com/store/apps/details?id=com.khandev.qrcodescanner">
   <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="100" width="250" />
 </a>
+</div>
 
-
+## Demo Video
 <div align="center">
 <img src = "https://github.com/khan-mujeeb/QR-Code-scanner/assets/89351750/7a739a26-9939-4437-ba1d-0fc237b9fc73" height="400" width = "200"/>
 </div>

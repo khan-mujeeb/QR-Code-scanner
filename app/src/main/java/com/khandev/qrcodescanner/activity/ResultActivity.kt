@@ -2,20 +2,21 @@ package com.khandev.qrcodescanner.activity
 
 import android.annotation.SuppressLint
 import android.content.ClipData
-import android.content.Context
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import android.webkit.URLUtil
 import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.webkit.URLUtil
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.khandev.qrcodescanner.R
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
 import com.khandev.qrcodescanner.databinding.ActivityResultBinding
+import com.khandev.qrcodescanner.helper.isValidEmail
 
 
 class ResultActivity : AppCompatActivity() {
@@ -60,10 +61,24 @@ class ResultActivity : AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
                 startActivity(intent)
 
-            } else {
+            } else if(cat =="email") {
+
+                val intent = Intent(Intent.ACTION_SENDTO)
+                intent.data = Uri.parse("mailto:") // only email apps should handle this
+
+                intent.putExtra(Intent.EXTRA_EMAIL, result)
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Subject:")
+                if (intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+
+
                 copyTextToClipboard(this@ResultActivity, result)
                 Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
-
+            }
+            else{
+                copyTextToClipboard(this@ResultActivity, result)
+                Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -133,17 +148,23 @@ class ResultActivity : AppCompatActivity() {
     private fun variableInit() {
         count = intent.getIntExtra("count", -1)!!
         result = intent.getStringExtra("result")!!
-        cat = isPlainTextOrUrl(result)
+        cat = isPlainTextOrCategory(result)
 
         viewMole = ViewModelProvider(this)[DBViewModle::class.java]
 
     }
 
-    fun isPlainTextOrUrl(input: String): String {
+    fun isPlainTextOrCategory(input: String): String {
 
         if (URLUtil.isValidUrl(input)) return "url"
+
+        else if(input.isValidEmail()) return "email"
+
         else return "text"
     }
+
+
+
 
     companion object {
         fun copyTextToClipboard(context: Context, text: String) {

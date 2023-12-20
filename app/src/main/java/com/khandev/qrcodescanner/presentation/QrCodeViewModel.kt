@@ -1,18 +1,18 @@
-package com.khandev.qrcodescanner.database.viewmodel
+package com.khandev.qrcodescanner.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.khandev.qrcodescanner.database.AppDatabase
-import com.khandev.qrcodescanner.database.data.QrCodeEntity
-import com.khandev.qrcodescanner.database.repository.DBRepository
+import com.khandev.qrcodescanner.data.QrCodeDatabase
+import com.khandev.qrcodescanner.data.QrCodeEntity
+import com.khandev.qrcodescanner.data.repository.DBRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class DBViewModle(application: Application) : AndroidViewModel(application) {
+class QrCodeViewModel(application: Application) : AndroidViewModel(application) {
 
-    val dao = AppDatabase.getDataBase(application).qrCodeDao()
+    val dao = QrCodeDatabase.getDataBase(application).qrCodeDao()
     private val repository = DBRepository(dao)
 
     val scannedQr: LiveData<List<QrCodeEntity>> = repository.scannedQrCode

@@ -1,4 +1,4 @@
-package com.khandev.qrcodescanner.activity
+package com.khandev.qrcodescanner.presentation.activity
 
 import android.annotation.SuppressLint
 import android.content.ClipData
@@ -13,13 +13,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.khandev.qrcodescanner.R
-import com.khandev.qrcodescanner.database.data.QrCodeEntity
-import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
+import com.khandev.qrcodescanner.data.QrCodeEntity
+import com.khandev.qrcodescanner.presentation.QrCodeViewModel
 import com.khandev.qrcodescanner.databinding.ActivityResultBinding
 
 
 class ResultActivity : AppCompatActivity() {
-    lateinit var viewMole: DBViewModle
+    lateinit var viewMole: QrCodeViewModel
     lateinit var binding: ActivityResultBinding
     var cat = ""
     var result = ""
@@ -135,7 +135,7 @@ class ResultActivity : AppCompatActivity() {
         result = intent.getStringExtra("result")!!
         cat = isPlainTextOrUrl(result)
 
-        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
+        viewMole = ViewModelProvider(this)[QrCodeViewModel::class.java]
 
     }
 

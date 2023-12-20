@@ -1,4 +1,4 @@
-package com.khandev.qrcodescanner.database.data
+package com.khandev.qrcodescanner.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

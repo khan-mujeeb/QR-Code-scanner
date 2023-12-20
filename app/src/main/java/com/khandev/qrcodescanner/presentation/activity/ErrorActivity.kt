@@ -1,4 +1,4 @@
-package com.khandev.qrcodescanner.activity
+package com.khandev.qrcodescanner.presentation.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

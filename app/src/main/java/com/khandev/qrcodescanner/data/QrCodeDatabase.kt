@@ -1,21 +1,19 @@
-package com.khandev.qrcodescanner.database
+package com.khandev.qrcodescanner.data
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.khandev.qrcodescanner.database.dao.QrCodeDao
-import com.khandev.qrcodescanner.database.data.QrCodeEntity
 
 @Database(entities = [QrCodeEntity::class], version = 1)
-abstract class AppDatabase : RoomDatabase() {
+abstract class QrCodeDatabase : RoomDatabase() {
     abstract fun qrCodeDao(): QrCodeDao
 
     companion object {
 
         @Volatile
-        var INSTANCE: AppDatabase? = null
-        fun getDataBase(context: Context): AppDatabase {
+        var INSTANCE: QrCodeDatabase? = null
+        fun getDataBase(context: Context): QrCodeDatabase {
             val tempInstance = INSTANCE
             if (tempInstance != null)
                 return tempInstance
@@ -23,7 +21,7 @@ abstract class AppDatabase : RoomDatabase() {
             synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
+                    QrCodeDatabase::class.java,
                     "stock_database"
                 ).build()
                 INSTANCE = instance

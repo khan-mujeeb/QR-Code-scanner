@@ -1,8 +1,8 @@
-package com.khandev.qrcodescanner.database.repository
+package com.khandev.qrcodescanner.data.repository
 
 import androidx.lifecycle.LiveData
-import com.khandev.qrcodescanner.database.dao.QrCodeDao
-import com.khandev.qrcodescanner.database.data.QrCodeEntity
+import com.khandev.qrcodescanner.data.QrCodeDao
+import com.khandev.qrcodescanner.data.QrCodeEntity
 
 class DBRepository(private val dao: QrCodeDao) {
 

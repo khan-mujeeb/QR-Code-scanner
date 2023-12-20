@@ -1,4 +1,4 @@
-package com.khandev.qrcodescanner.activity
+package com.khandev.qrcodescanner.presentation.activity
 
 import android.content.Context
 import android.content.Intent
@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.khandev.qrcodescanner.adapter.ResultAdapter
-import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
+import com.khandev.qrcodescanner.presentation.adapter.ResultAdapter
+import com.khandev.qrcodescanner.presentation.QrCodeViewModel
 import com.google.android.gms.common.moduleinstall.ModuleInstall
 import com.google.android.gms.common.moduleinstall.ModuleInstallClient
 import com.google.android.gms.common.moduleinstall.ModuleInstallRequest
@@ -26,7 +26,7 @@ import com.khandev.qrcodescanner.R
 import com.khandev.qrcodescanner.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var viewMole: DBViewModle
+    lateinit var viewMole: QrCodeViewModel
     lateinit var binding: ActivityMainBinding
     lateinit var options: GmsBarcodeScannerOptions
     lateinit var scanner: GmsBarcodeScanner
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         optionalModuleApi = TfLite.getClient(this)
 
         scanner = GmsBarcodeScanning.getClient(this@MainActivity, options)
-        viewMole = ViewModelProvider(this)[DBViewModle::class.java]
+        viewMole = ViewModelProvider(this)[QrCodeViewModel::class.java]
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
 
     }

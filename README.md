@@ -67,5 +67,10 @@ You can [start discussions](https://github.com/khan-mujeeb/QR-Code-scanner/discu
 
 If you have any questions or encounter any issues, please contact [mujeebkhan1831@gmail.com]. We appreciate your feedback and support!
 
+## Our Contributors
+
+<a href="https://github.com/khan-mujeeb/QR-Code-scanner/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=khan-mujeeb/QR-Code-scanner" />
+</a>
 
 

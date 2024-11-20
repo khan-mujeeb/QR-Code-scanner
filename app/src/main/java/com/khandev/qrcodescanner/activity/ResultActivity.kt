@@ -1,10 +1,12 @@
 package com.khandev.qrcodescanner.activity
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentProviderOperation
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.provider.ContactsContract
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.khandev.qrcodescanner.R
 import com.khandev.qrcodescanner.adapter.VCardDataAdapter
-import com.khandev.qrcodescanner.data.VCardData
+import com.khandev.qrcodescanner.data.Permission
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
 import com.khandev.qrcodescanner.databinding.ActivityResultBinding
+import com.khandev.qrcodescanner.utlis.Categories
+import com.khandev.qrcodescanner.utlis.PermissionHandler
 import com.khandev.qrcodescanner.utlis.ScannerUtils.copyTextToClipboard
 
 
@@ -26,6 +30,7 @@ class ResultActivity : AppCompatActivity() {
     private var cat = ""
     private var result = ""
     private var count = -1
+    private var phoneNumber = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
@@ -58,22 +63,36 @@ class ResultActivity : AppCompatActivity() {
     private fun subscribeClickEvents() {
 
         binding.btn.setOnClickListener {
-            if (cat == "url") {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
-                startActivity(intent)
+            when (cat) {
+                Categories.URL -> {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(result))
+                    startActivity(intent)
 
-            } else {
-                copyTextToClipboard(this@ResultActivity, result)
-                Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
+                }
+                Categories.CONTACT -> {
+                    makeAPhoneCall(result)
+                }
+                else -> {
+                    copyTextToClipboard(this@ResultActivity, result)
+                    Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
 
+                }
             }
         }
 
         binding.share.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, result)
-            startActivity(Intent.createChooser(intent, "Share via"))
+            when (cat) {
+                Categories.CONTACT -> {
+                    saveContact(vcardResult!!)
+                }
+                else -> {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.type = "text/plain"
+                    intent.putExtra(Intent.EXTRA_TEXT, result)
+                    startActivity(Intent.createChooser(intent, "Share via"))
+                }
+            }
+
         }
 
         binding.result.setOnLongClickListener {
@@ -83,18 +102,28 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
+    private fun makeAPhoneCall(result: String) {
+        val dialIntent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$phoneNumber")
+        }
+        startActivity(dialIntent)
+
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun subscribeUi() {
         backPressed()
         displayBody()
-        if(result != "contact") {
+        if(result != Categories.CONTACT) {
             binding.result.text = result
         } else {
             binding.ResultRc.adapter = VCardDataAdapter(vcardResult!!)
         }
     }
 
+
+    // This function is used to handle the back button press
     private fun backPressed() {
 
         val toolbar = binding.toolbar
@@ -107,13 +136,19 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
+    //
     private fun displayBody() {
-        if (cat == "contact") {
-            setUpContactData()
-        } else if (cat == "url") {
-            setUpUrlData()
-        } else {
-            setUpPlainTextData()
+        when (cat) {
+            Categories.CONTACT -> {
+                setUpContactData()
+                if (phoneNumber.isEmpty()) binding.btn.isClickable = false
+            }
+            Categories.URL -> {
+                setUpUrlData()
+            }
+            else -> {
+                setUpPlainTextData()
+            }
         }
     }
 
@@ -122,11 +157,14 @@ class ResultActivity : AppCompatActivity() {
             logo.setImageDrawable(resources.getDrawable(R.drawable.baseline_contact_phone_24))
             category.text = getString(R.string.contact)
             btn.text = getString(R.string.copy_text)
-//            result.setTextColor(ContextCompat.getColor(this@ResultActivity, R.color.black))
             result.visibility = android.view.View.GONE
             ResultRc.visibility = android.view.View.VISIBLE
 
+            // setting up the contact data
             ResultRc.adapter = VCardDataAdapter(vcardResult!!)
+
+            share.text = getString(R.string.save_contact)
+            btn.text = getString(R.string.call)
         }
     }
 
@@ -166,20 +204,21 @@ class ResultActivity : AppCompatActivity() {
 
     }
 
+    // function to get the category of the input
      private fun getCateogory(input: String): String {
 
          val temp = input.toLowerCase()
 
          return if (temp.contains("vcard")) {
-             "contact"
+             Categories.CONTACT
          } else {
              if(URLUtil.isValidUrl(input)) "url" else "text"
          }
     }
 
+    // function to extract contact info from vcard string and return as a map
     private fun parseVCard(vCardString: String): Map<String, String> {
 
-        Log.d("VCard", vCardString)
         val lines = vCardString.split("\n")
         val vCardDataMap = mutableMapOf<String, String>()
 
@@ -210,9 +249,128 @@ class ResultActivity : AppCompatActivity() {
                         .filter { it.value.isNotBlank() } // Exclude empty values
                         .joinToString(", ") { it.value }
                 }
+
+
             }
+        }
+
+
+        phoneNumber = if (vCardDataMap["Phone No."]!!.isNotEmpty()) {
+            vCardDataMap["Phone No."]!!
+        } else {
+            vCardDataMap["Mobile No."]!!
         }
 
         return vCardDataMap
     }
+
+    private fun saveContact(vCardData: Map<String, String>) {
+
+        val permissionsList = listOf(
+            Permission(Manifest.permission.WRITE_CONTACTS, 101) {
+
+            },
+        )
+
+        PermissionHandler.checkAndRequestPermissions(this, permissionsList)
+
+        val contentResolver = contentResolver
+        val operations = ArrayList<ContentProviderOperation>()
+
+        // Insert a raw contact (required step)
+        operations.add(
+            ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+                .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+                .build()
+        )
+
+        // Insert Name
+        vCardData["Full Name"]?.let { fullName ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, fullName)
+                    .build()
+            )
+        }
+
+        // Insert Phone Number
+        vCardData["Mobile No."]?.let { mobile ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, mobile)
+                    .withValue(ContactsContract.CommonDataKinds.Phone.TYPE, ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE)
+                    .build()
+            )
+        }
+
+        // Insert Email
+        vCardData["Email"]?.let { email ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Email.ADDRESS, email)
+                    .withValue(ContactsContract.CommonDataKinds.Email.TYPE, ContactsContract.CommonDataKinds.Email.TYPE_WORK)
+                    .build()
+            )
+        }
+
+        // Insert Address
+        vCardData["Address"]?.let { address ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.StructuredPostal.FORMATTED_ADDRESS, address)
+                    .build()
+            )
+        }
+
+        // Insert Organization
+        vCardData["Organization"]?.let { organization ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Organization.COMPANY, organization)
+                    .build()
+            )
+        }
+
+        // Insert Website
+        vCardData["website"]?.let { website ->
+            operations.add(
+                ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Website.URL, website)
+                    .build()
+            )
+        }
+
+        try {
+            // Apply the batch insert
+            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+            Toast.makeText(this, "Contact saved successfully", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Failed to save contact", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Override onRequestPermissionsResult to pass it to PermissionHandler
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        PermissionHandler.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
+    }
+
 }

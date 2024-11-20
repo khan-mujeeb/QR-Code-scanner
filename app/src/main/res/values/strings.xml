@@ -14,5 +14,7 @@
     <string name="error_meesage">We are providing services for scanning codes without requiring your camera access and preserving user privacy. This is accomplished by delegating the task of scanning the code to Google Play services and returning only the scan results to your app</string>
     <string name="guide">Kindly clear your play services data and restart the app</string>
     <string name="contact">Contact</string>
+    <string name="save_contact">Save Contact</string>
+    <string name="call">Call</string>
 
 </resources>

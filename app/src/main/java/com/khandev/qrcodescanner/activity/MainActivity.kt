@@ -27,16 +27,16 @@ import com.khandev.qrcodescanner.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewMole: DBViewModle
-    lateinit var binding: ActivityMainBinding
-    lateinit var options: GmsBarcodeScannerOptions
-    lateinit var scanner: GmsBarcodeScanner
-    lateinit var vibrator: Vibrator
-    lateinit var adapter: ResultAdapter
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var options: GmsBarcodeScannerOptions
+    private lateinit var scanner: GmsBarcodeScanner
+    private lateinit var vibrator: Vibrator
+    private lateinit var adapter: ResultAdapter
     private val PREF_NAME = "qr_code_pref"
     private val FIRST_TIME_VISTOR = "first_timer"
-    lateinit var moduleInstallClient: ModuleInstallClient
-    lateinit var  optionalModuleApi: TfLiteClient
-    lateinit var moduleInstallRequest:  ModuleInstallRequest
+    private lateinit var moduleInstallClient: ModuleInstallClient
+    private lateinit var  optionalModuleApi: TfLiteClient
+    private lateinit var moduleInstallRequest:  ModuleInstallRequest
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             .areModulesAvailable(optionalModuleApi)
             .addOnSuccessListener {
                 if (it.areModulesAvailable()) {
-                    println("already availabe")
+                    println("already available")
 
                 } else {
                     sendModuleInstallRequest()
@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
+    // function to check if user is first time visitor
     private fun checkForFirstTimeUser() {
         val sharedPref = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
@@ -127,8 +128,15 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun subscribeUi() {
+
+
+        // function to display qr code scanned history
         loadingScreenAndData()
-        var itemTouchHelperCallbacks = object : ItemTouchHelper.SimpleCallback(
+
+
+//  ************************************* start ****************************************************
+        // code to delete qr code scanned history
+        val itemTouchHelperCallbacks = object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
         ) {
             override fun onMove(
@@ -151,11 +159,15 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        // swipe to delete
         ItemTouchHelper(itemTouchHelperCallbacks).apply {
             attachToRecyclerView(binding.rc)
         }
+
+//  ********************************************* end **********************************************
     }
 
+    // function to display qr code scanned history and loading screen
     private fun loadingScreenAndData() {
         binding.loading.visibility = View.VISIBLE
         viewMole.scannedQr.observe(this) { task ->
@@ -191,12 +203,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // function to scan qr code
     private fun scan() {
         scanner.startScan()
             .addOnSuccessListener { barcode ->
 
+                // vibrate when qr code is scanned (haptic feedback)
                 if (vibrator.hasVibrator()) {
-                    val milliseconds = 250L
+                    val milliseconds = 150L
                     vibrator.vibrate(milliseconds)
                 }
 
@@ -211,13 +225,13 @@ class MainActivity : AppCompatActivity() {
 
             }
             .addOnFailureListener {
-                println("mujeeb $it")
 
                 Toast.makeText(this, "failure", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this, ErrorActivity::class.java))
             }
     }
 
+    // function to check if user is first time visitor
     private fun isFirstTimeVistor(sharedPref: SharedPreferences?): Boolean {
         return sharedPref!!.getBoolean(FIRST_TIME_VISTOR, true)
     }

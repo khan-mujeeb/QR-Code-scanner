@@ -56,6 +56,16 @@
         android:textColor="@color/black"
         android:textSize="17sp" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ResultRc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginTop="0dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:layout_above="@id/share"
+        android:layout_below="@id/divider"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/share"

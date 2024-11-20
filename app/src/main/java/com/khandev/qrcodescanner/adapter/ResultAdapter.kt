@@ -10,9 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.khandev.qrcodescanner.activity.ResultActivity.Companion.copyTextToClipboard
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.R
+import com.khandev.qrcodescanner.utlis.ScannerUtils.copyTextToClipboard
 
 class ResultAdapter(private val context: Context, private val resultList: List<QrCodeEntity>) :
     RecyclerView.Adapter<ResultAdapter.ResultViewHolder>() {

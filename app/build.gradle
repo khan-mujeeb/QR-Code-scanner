@@ -7,15 +7,15 @@ plugins {
 
 android {
     namespace 'com.khandev.qrcodescanner'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         
         applicationId "com.khandev.qrcodescanner"
         minSdk 24
-        targetSdk 33
-        versionCode 3
-        versionName "1.2"
+        targetSdk 34
+        versionCode 4
+        versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

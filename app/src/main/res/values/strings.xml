@@ -16,5 +16,7 @@
     <string name="contact">Contact</string>
     <string name="save_contact">Save Contact</string>
     <string name="call">Call</string>
+    <string name="https_openai_com">https://openai.com/</string>
+    <string name="clear_all">Clear All</string>
 
 </resources>

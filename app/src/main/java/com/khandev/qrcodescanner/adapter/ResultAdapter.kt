@@ -1,5 +1,6 @@
 package com.khandev.qrcodescanner.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.R
+import com.khandev.qrcodescanner.utlis.Categories
 import com.khandev.qrcodescanner.utlis.ScannerUtils.copyTextToClipboard
 
 class ResultAdapter(private val context: Context, private val resultList: List<QrCodeEntity>) :
@@ -36,6 +38,7 @@ class ResultAdapter(private val context: Context, private val resultList: List<Q
         private val logo: ImageView = itemView.findViewById(R.id.Rclogo)
         private val resultTextView: TextView = itemView.findViewById(R.id.Rcdata)
 
+        @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(result: QrCodeEntity) {
             val data = result.qrcodeData
             val cat = result.category
@@ -51,13 +54,27 @@ class ResultAdapter(private val context: Context, private val resultList: List<Q
 
                 }
             }
-            if (cat == "url") {
-                logo.setImageDrawable(context.getDrawable(R.drawable.browser_new))
-            } else {
-                logo.setImageDrawable(context.getDrawable(R.drawable.plain_text))
+            when (cat) {
+                "url" -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.browser_new))
+                }
+                Categories.CONTACT -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.baseline_contact_phone_24))
+                }
+                else -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.plain_text))
+                }
             }
 
-            resultTextView.text = data
+            when(cat){
+                Categories.CONTACT -> {
+                    val (name, phone) = extractNameAndPhone(data)
+                    resultTextView.text = "$name\n$phone"
+                }
+                else -> {
+                    resultTextView.text = data
+                }
+            }
         }
 
 
@@ -65,6 +82,19 @@ class ResultAdapter(private val context: Context, private val resultList: List<Q
 
     fun getQrCodeAt(position: Int): QrCodeEntity {
         return resultList[position]
+    }
+
+    fun extractNameAndPhone(vCard: String): Pair<String?, String?> {
+        val nameRegex = Regex("FN:(.*)")
+        val phoneRegex = Regex("TEL:(.*)")
+
+        val name = nameRegex.find(vCard)?.groupValues?.get(1)?.trim()
+        val phone = phoneRegex.find(vCard)?.groupValues?.get(1)?.trim().isNullOrBlank().let {
+            "No phone number found"
+        }
+
+
+        return Pair(name, phone)
     }
 }
 

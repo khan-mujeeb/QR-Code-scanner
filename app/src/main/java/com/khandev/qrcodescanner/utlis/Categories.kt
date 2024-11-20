@@ -15,4 +15,18 @@ object Categories {
     const val PRODUCT = "product"
     const val UNKNOWN = "unknown"
     const val CONTACT = "contact"
+
+    // Convert the constants to a list
+    val categoriesList = listOf(
+        Categories.ALL,
+        Categories.URL,
+        Categories.TEXT,
+        Categories.CONTACT,
+        Categories.GEO,
+        Categories.EMAIL,
+        Categories.PHONE,
+        Categories.SMS,
+        Categories.WIFI
+
+    )
 }

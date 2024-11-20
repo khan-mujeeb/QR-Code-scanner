@@ -23,7 +23,9 @@ import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
 import com.khandev.qrcodescanner.R
+import com.khandev.qrcodescanner.adapter.CategoryAdapter
 import com.khandev.qrcodescanner.databinding.ActivityMainBinding
+import com.khandev.qrcodescanner.utlis.Categories
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewMole: DBViewModle
@@ -47,17 +49,14 @@ class MainActivity : AppCompatActivity() {
 
         checkForFirstTimeUser()
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-
         variableInit()
         subscribeClickEvents()
         subscribeUi()
         checkForModule()
+
     }
+
+
 
     private fun checkForModule() {
         moduleInstallClient
@@ -129,9 +128,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun subscribeUi() {
 
+        // display categories
+        binding.categoryRecyclerView.adapter = CategoryAdapter(Categories.categoriesList) { selectedCategory ->
 
-        // function to display qr code scanned history
-        loadingScreenAndData()
+            binding.loading.visibility = View.VISIBLE
+            filterData(selectedCategory) // Call the filtering function
+        }
+
 
 
 //  ************************************* start ****************************************************
@@ -167,24 +170,32 @@ class MainActivity : AppCompatActivity() {
 //  ********************************************* end **********************************************
     }
 
-    // function to display qr code scanned history and loading screen
-    private fun loadingScreenAndData() {
-        binding.loading.visibility = View.VISIBLE
+
+    private fun filterData(selectedCategory: String) {
         viewMole.scannedQr.observe(this) { task ->
-            binding.loading.visibility = View.INVISIBLE
-            adapter = ResultAdapter(this@MainActivity, task)
-            if (task.isNotEmpty()) {
+            val filteredTask = if (selectedCategory == Categories.ALL) {
+                viewMole.scannedQr.value // No filter show "all" category
+            } else {
+                task.filter { it.category == selectedCategory } // Adjust this based on your data structure
+            }
+
+            adapter = ResultAdapter(this@MainActivity, filteredTask!!)
+            binding.rc.adapter = adapter
+
+            if (filteredTask.isNotEmpty()) {
                 binding.clearAll.visibility = View.VISIBLE
                 binding.noDataTextView.visibility = View.GONE
                 binding.rc.visibility = View.VISIBLE
-                binding.rc.adapter = adapter
             } else {
                 binding.clearAll.visibility = View.GONE
                 binding.noDataTextView.visibility = View.VISIBLE
                 binding.rc.visibility = View.GONE
             }
+            binding.loading.visibility = View.GONE
         }
     }
+
+
 
     private fun subscribeClickEvents() {
 

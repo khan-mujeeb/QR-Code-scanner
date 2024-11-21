@@ -3,11 +3,16 @@ package com.khandev.qrcodescanner.activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Vibrator
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -135,39 +140,85 @@ class MainActivity : AppCompatActivity() {
             filterData(selectedCategory) // Call the filtering function
         }
 
-
-
-//  ************************************* start ****************************************************
-        // code to delete qr code scanned history
+        // Inside the subscribeUi() function
         val itemTouchHelperCallbacks = object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
         ) {
+            private val background = ColorDrawable(Color.RED) // Red background for delete
+            private val deleteIcon: Drawable? = ContextCompat.getDrawable(this@MainActivity, R.drawable.baseline_delete_24) // Replace with your delete icon
+            private val iconMargin = resources.getDimension(R.dimen.icon_margin).toInt() // Define margin for the icon in dimens.xml
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val postion = viewHolder.adapterPosition
-                val qrCode = adapter.getQrCodeAt(postion)
+                val position = viewHolder.adapterPosition
+                val qrCode = adapter.getQrCodeAt(position)
                 viewMole.deleteEntery(qrCode)
 
-                Toast.makeText(this@MainActivity, getString(R.string.deleted), Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(this@MainActivity, getString(R.string.deleted), Toast.LENGTH_SHORT).show()
+            }
 
+            override fun onChildDraw(
+                c: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                dX: Float,
+                dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
+                val itemView = viewHolder.itemView
+
+                // Reset background and icon if swipe gesture is not active
+                if (dX == 0f && !isCurrentlyActive) {
+                    background.setBounds(0, 0, 0, 0)
+                    deleteIcon?.setBounds(0, 0, 0, 0)
+                } else {
+                    // Draw background
+                    if (dX > 0) { // Swiping to the right
+                        background.setBounds(itemView.left, itemView.top, itemView.left + dX.toInt(), itemView.bottom)
+                    } else { // Swiping to the left
+                        background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                    }
+                    background.draw(c)
+
+                    // Draw delete icon
+                    deleteIcon?.let {
+                        val iconWidth = it.intrinsicWidth
+                        val iconHeight = it.intrinsicHeight
+                        val iconTop = itemView.top + (itemView.height - iconHeight) / 2
+                        val iconBottom = iconTop + iconHeight
+                        val iconLeft: Int
+                        val iconRight: Int
+
+                        if (dX > 0) { // Swiping to the right
+                            iconLeft = itemView.left + iconMargin
+                            iconRight = iconLeft + iconWidth
+                        } else { // Swiping to the left
+                            iconRight = itemView.right - iconMargin
+                            iconLeft = iconRight - iconWidth
+                        }
+
+                        it.setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        it.draw(c)
+                    }
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
             }
 
         }
 
-        // swipe to delete
+// Attach ItemTouchHelper to RecyclerView
         ItemTouchHelper(itemTouchHelperCallbacks).apply {
             attachToRecyclerView(binding.rc)
         }
-
-//  ********************************************* end **********************************************
     }
 
 

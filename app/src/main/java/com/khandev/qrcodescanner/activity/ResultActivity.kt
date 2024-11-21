@@ -5,22 +5,29 @@ import android.annotation.SuppressLint
 import android.content.ContentProviderOperation
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.khandev.qrcodescanner.R
 import com.khandev.qrcodescanner.adapter.VCardDataAdapter
+import com.khandev.qrcodescanner.adapter.WifiDataAdapter
 import com.khandev.qrcodescanner.data.Permission
+import com.khandev.qrcodescanner.data.UpiData
+import com.khandev.qrcodescanner.data.WifiConfig
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.database.viewmodel.DBViewModle
 import com.khandev.qrcodescanner.databinding.ActivityResultBinding
 import com.khandev.qrcodescanner.utlis.Categories
 import com.khandev.qrcodescanner.utlis.PermissionHandler
+import com.khandev.qrcodescanner.utlis.QrCodeParser
+import com.khandev.qrcodescanner.utlis.QrCodeParser.parseVCard
+import com.khandev.qrcodescanner.utlis.ScannerUtils
 import com.khandev.qrcodescanner.utlis.ScannerUtils.copyTextToClipboard
+import com.khandev.qrcodescanner.utlis.ScannerUtils.getCateogory
 
 
 class ResultActivity : AppCompatActivity() {
@@ -29,8 +36,10 @@ class ResultActivity : AppCompatActivity() {
     private var vcardResult: Map<String, String>? = null
     private var cat = ""
     private var result = ""
-    private var count = -1
+    private var count = 0
     private var phoneNumber = ""
+    private var wifiData: WifiConfig? = null
+    private var upiData: UpiData? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
@@ -72,6 +81,15 @@ class ResultActivity : AppCompatActivity() {
                 Categories.CONTACT -> {
                     makeAPhoneCall(result)
                 }
+
+                Categories.WIFI -> {
+                    ScannerUtils.copyTextToClipboard(this, wifiData!!.password!!)
+                }
+
+                Categories.PAYMENT -> {
+                    ScannerUtils.copyTextToClipboard(this, upiData!!.upiId!!)
+                }
+
                 else -> {
                     copyTextToClipboard(this@ResultActivity, result)
                     Toast.makeText(this, getString(R.string.copied), Toast.LENGTH_SHORT).show()
@@ -84,6 +102,22 @@ class ResultActivity : AppCompatActivity() {
             when (cat) {
                 Categories.CONTACT -> {
                     saveContact(vcardResult!!)
+                }
+
+                Categories.PAYMENT -> {
+                    ScannerUtils.handleUpiPayment(this, upiData!!)
+                }
+
+                Categories.WIFI -> {
+                    if (wifiData != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            ScannerUtils.connectToWifi(this, wifiData!!)
+                        } else {
+                            Toast.makeText(this, "This feature is only available on Android 10 and above", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this, "Invalid Wi-Fi QR code", Toast.LENGTH_SHORT).show()
+                    }
                 }
                 else -> {
                     val intent = Intent(Intent.ACTION_SEND)
@@ -123,7 +157,9 @@ class ResultActivity : AppCompatActivity() {
     }
 
 
-    // This function is used to handle the back button press
+    // *********************************************************************************************
+    //                   This function is used to handle the back button press
+    // *********************************************************************************************
     private fun backPressed() {
 
         val toolbar = binding.toolbar
@@ -136,7 +172,9 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
-    //
+    // *********************************************************************************************
+    //                                   Display info according to category
+    // *********************************************************************************************
     private fun displayBody() {
         when (cat) {
             Categories.CONTACT -> {
@@ -146,12 +184,79 @@ class ResultActivity : AppCompatActivity() {
             Categories.URL -> {
                 setUpUrlData()
             }
+
+            Categories.WIFI -> {
+                setUpWifiData()
+            }
+
+            Categories.PAYMENT -> {
+                setUpUpiData()
+            }
+
             else -> {
                 setUpPlainTextData()
             }
         }
     }
 
+    // *********************************************************************************************
+    //                                   SetUP Data According to Category
+    // *********************************************************************************************
+
+
+    private fun setUpUpiData() {
+        binding.apply {
+            logo.setImageDrawable(resources.getDrawable(R.drawable.upi_icon))
+            category.text = getString(R.string.upi_payment)
+
+            btn.text = getString(R.string.copy_text)
+            share.text = getString(R.string.make_payment)
+
+            ResultRc.visibility = android.view.View.VISIBLE
+            result.visibility = android.view.View.GONE
+
+            val upiMap = mutableMapOf<String, String>()
+            upiMap["UPI ID"] = upiData!!.upiId.toString()
+            upiMap["Name"] = upiData!!.payeeName.toString()
+            upiMap["Amount"] = upiData!!.amount.toString()
+            upiMap["Currency"] = upiData!!.currency.toString()
+            upiMap["Note"] = upiData!!.transactionNote.toString()
+            upiMap["Transaction ID"] = upiData!!.transactionRefId.toString()
+            upiMap["Merchant Code"] = upiData!!.merchantCode.toString()
+            upiMap["url"] = upiData!!.url.toString()
+
+            ResultRc.adapter = WifiDataAdapter(upiMap.toList())
+
+        }
+    }
+
+    private fun setUpWifiData() {
+        binding.apply {
+            logo.setImageDrawable(resources.getDrawable(R.drawable.wifi_logo))
+            category.text = getString(R.string.wifi)
+
+            btn.text = getString(R.string.copy_text)
+            share.text = "Connect"
+
+            ResultRc.visibility = android.view.View.VISIBLE
+            result.visibility = android.view.View.GONE
+
+
+
+            val wifiMap = mutableMapOf<String, String>()
+
+            wifiMap["SSID"] = wifiData!!.ssid.toString()
+            wifiMap["Password"] = wifiData!!.password!!.toString()
+            wifiMap["Security"] = wifiData!!.encryption!!.toString()
+            wifiMap["Hidden"] = wifiData!!.hidden.toString()
+
+
+
+
+
+            ResultRc.adapter = WifiDataAdapter(wifiMap.toList())
+        }
+    }
     private fun setUpContactData() {
         binding.apply {
             logo.setImageDrawable(resources.getDrawable(R.drawable.baseline_contact_phone_24))
@@ -192,77 +297,36 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
+
+    // *********************************************************************************************
+    //                                   Variable Initialization
+    // *********************************************************************************************
     private fun variableInit() {
-        count = intent.getIntExtra("count", -1)!!
+
         result = intent.getStringExtra("result")!!
-        cat = getCateogory(result)
         viewMole = ViewModelProvider(this)[DBViewModle::class.java]
 
-        if (cat == "contact") {
+
+        cat = getCateogory(result)
+
+        if (cat == Categories.CONTACT) {
             vcardResult = parseVCard(result)
+            phoneNumber = vcardResult!!["Phone Number"] ?: vcardResult!!["Mobile Number"] ?: ""
+        } else if(cat == Categories.WIFI) {
+            wifiData = QrCodeParser.parseWifiQRCode(result)
+        } else if(cat == Categories.PAYMENT) {
+            upiData = QrCodeParser.parseUpiQrCode(result)
+
         }
 
     }
 
-    // function to get the category of the input
-     private fun getCateogory(input: String): String {
-
-         val temp = input.toLowerCase()
-
-         return if (temp.contains("vcard")) {
-             Categories.CONTACT
-         } else {
-             if(URLUtil.isValidUrl(input)) "url" else "text"
-         }
-    }
-
-    // function to extract contact info from vcard string and return as a map
-    private fun parseVCard(vCardString: String): Map<String, String> {
-
-        val lines = vCardString.split("\n")
-        val vCardDataMap = mutableMapOf<String, String>()
-
-        for (line in lines) {
-            when {
-                line.startsWith("FN:") -> vCardDataMap["Full Name"] = line.substringAfter("FN:").trim()
-                line.startsWith("ORG:") -> vCardDataMap["Organization"] = line.substringAfter("ORG:").trim()
-                line.startsWith("TITLE:") -> vCardDataMap["Title"] = line.substringAfter("TITLE:").trim()
-                line.startsWith("TEL;WORK;VOICE:") -> vCardDataMap["Phone No."] = line.substringAfter("TEL;WORK;VOICE:").trim()
-                line.startsWith("TEL;CELL:") -> vCardDataMap["Mobile No."] = line.substringAfter("TEL;CELL:").trim()
-                line.startsWith("EMAIL;WORK;INTERNET:") -> vCardDataMap["Email"] = line.substringAfter("EMAIL;WORK;INTERNET:").trim()
-                line.startsWith("URL:") -> vCardDataMap["website"] = line.substringAfter("URL:").trim()
-//                line.startsWith("ADR:") -> vCardDataMap["Address"] = line.substringAfter("ADR:").trim()
-                line.startsWith("TEL;FAX:") -> vCardDataMap["Fax"] = line.substringAfter("TEL;FAX:").trim()
-
-                // Handle the ADR (Address) field
-                line.startsWith("ADR:") -> {
-                    val addressParts = line.substringAfter("ADR:").split(";").map { it.trim() }
-                    val addressMap = mutableMapOf(
-                        "Street" to (addressParts.getOrNull(2) ?: ""),
-                        "City" to (addressParts.getOrNull(3) ?: ""),
-                        "State" to (addressParts.getOrNull(4) ?: ""),
-                        "Postal Code" to (addressParts.getOrNull(5) ?: ""),
-                        "Country" to (addressParts.getOrNull(6) ?: "")
-                    )
-                    // Combine address parts into a human-readable format
-                    vCardDataMap["Address"] = addressMap.entries
-                        .filter { it.value.isNotBlank() } // Exclude empty values
-                        .joinToString(", ") { it.value }
-                }
 
 
-            }
-        }
 
-
-        phoneNumber = if (vCardDataMap["Phone No."]!!.isNotEmpty()) {
-            vCardDataMap["Phone No."]!!
-        } else {
-            vCardDataMap["Mobile No."]!!
-        }
-
-        return vCardDataMap
-    }
+    // *********************************************************************************************
+    //                                   Save Contact
+    // *********************************************************************************************
 
     private fun saveContact(vCardData: Map<String, String>) {
 
@@ -363,7 +427,10 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
+
+    // *********************************************************************************************
     // Override onRequestPermissionsResult to pass it to PermissionHandler
+    // *********************************************************************************************
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

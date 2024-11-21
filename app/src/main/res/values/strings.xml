@@ -18,5 +18,8 @@
     <string name="call">Call</string>
     <string name="https_openai_com">https://openai.com/</string>
     <string name="clear_all">Clear All</string>
+    <string name="wifi">WiFi</string>
+    <string name="upi_payment">UPI Payment</string>
+    <string name="make_payment">Make Payment</string>
 
 </resources>

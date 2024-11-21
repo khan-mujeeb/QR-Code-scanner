@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.khandev.qrcodescanner.database.data.QrCodeEntity
 import com.khandev.qrcodescanner.R
 import com.khandev.qrcodescanner.utlis.Categories
+import com.khandev.qrcodescanner.utlis.QrCodeParser
 import com.khandev.qrcodescanner.utlis.ScannerUtils.copyTextToClipboard
 
 class ResultAdapter(private val context: Context, private val resultList: List<QrCodeEntity>) :
@@ -44,37 +45,67 @@ class ResultAdapter(private val context: Context, private val resultList: List<Q
             val cat = result.category
 
             itemView.setOnClickListener {
-                if (cat == "url") {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
-                    context.startActivity(intent)
 
-                } else {
-                    copyTextToClipboard(context, data)
-                    Toast.makeText(context, "copied", Toast.LENGTH_SHORT).show()
+                when(cat) {
+                    Categories.URL -> {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(data))
+                        context.startActivity(intent)
+                    }
 
+                    Categories.WIFI -> {
+                        val wifiData = QrCodeParser.parseWifiQRCode(data)
+                        copyTextToClipboard(context, wifiData!!.password!!)
+                    }
+
+                    Categories.PAYMENT -> {
+                        val upiData = QrCodeParser.parseUpiQrCode(data)
+                        copyTextToClipboard(context, upiData.upiId!!)
+
+                    }
+
+                    Categories.CONTACT -> {
+                        val (name, phone) = extractNameAndPhone(data)
+                        copyTextToClipboard(context, phone!! )
+                    }
+                    else -> {
+                        copyTextToClipboard(context, data)
+                    }
                 }
+
             }
             when (cat) {
-                "url" -> {
+
+
+
+                Categories.URL -> {
                     logo.setImageDrawable(context.getDrawable(R.drawable.browser_new))
+                    resultTextView.text = data
                 }
                 Categories.CONTACT -> {
                     logo.setImageDrawable(context.getDrawable(R.drawable.baseline_contact_phone_24))
-                }
-                else -> {
-                    logo.setImageDrawable(context.getDrawable(R.drawable.plain_text))
-                }
-            }
-
-            when(cat){
-                Categories.CONTACT -> {
                     val (name, phone) = extractNameAndPhone(data)
                     resultTextView.text = "$name\n$phone"
                 }
+
+                Categories.WIFI -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.wifi_logo))
+                    val wifiData = QrCodeParser.parseWifiQRCode(data)
+                    resultTextView.text = wifiData!!.ssid + "\n" + wifiData!!.password
+                }
+
+                Categories.PAYMENT -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.upi_icon))
+                    val upiData = QrCodeParser.parseUpiQrCode(data)
+                    resultTextView.text = upiData!!.payeeName + "\n" + upiData!!.upiId
+                }
                 else -> {
+                    logo.setImageDrawable(context.getDrawable(R.drawable.plain_text))
                     resultTextView.text = data
+
                 }
             }
+
+
         }
 
 

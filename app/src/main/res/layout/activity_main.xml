@@ -35,15 +35,10 @@
          />
 
 
-    <com.google.android.material.chip.ChipGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </com.google.android.material.chip.ChipGroup>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_marginVertical="15dp"
-        android:paddingHorizontal="20dp"
         android:id="@+id/categoryRecyclerView"
         android:layout_below="@id/divider"
         android:foregroundGravity="center_vertical"
@@ -73,7 +68,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:drawablePadding="10dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:text="@string/clear_all"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/baseline_clear_all_24" />
@@ -96,7 +91,9 @@
         android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginVertical="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="5dp"
+
         android:background="@drawable/ui_btn_bg"
         android:padding="10dp"
         android:text="@string/scan_qr"

@@ -227,7 +227,6 @@ class MainActivity : AppCompatActivity() {
 
                 val intent = Intent(this, ResultActivity::class.java)
                 intent.putExtra("result", barcode.rawValue)
-                intent.putExtra("count", 0)
                 Toast.makeText(this, "scanned", Toast.LENGTH_SHORT).show()
                 startActivity(intent)
             }

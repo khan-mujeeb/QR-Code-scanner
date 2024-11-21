@@ -116,13 +116,10 @@ class ResultAdapter(private val context: Context, private val resultList: List<Q
     }
 
     fun extractNameAndPhone(vCard: String): Pair<String?, String?> {
-        val nameRegex = Regex("FN:(.*)")
-        val phoneRegex = Regex("TEL:(.*)")
 
-        val name = nameRegex.find(vCard)?.groupValues?.get(1)?.trim()
-        val phone = phoneRegex.find(vCard)?.groupValues?.get(1)?.trim().isNullOrBlank().let {
-            "No phone number found"
-        }
+        val vcard = QrCodeParser.parseVCard(vCard)
+        val name = vcard["Full Name"]
+        val phone = vcard["Phone No."] ?: vcard["Mobile No."] ?: ""
 
 
         return Pair(name, phone)

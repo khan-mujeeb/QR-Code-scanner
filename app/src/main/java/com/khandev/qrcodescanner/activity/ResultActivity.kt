@@ -309,14 +309,18 @@ class ResultActivity : AppCompatActivity() {
 
         cat = getCateogory(result)
 
-        if (cat == Categories.CONTACT) {
-            vcardResult = parseVCard(result)
-            phoneNumber = vcardResult!!["Phone Number"] ?: vcardResult!!["Mobile Number"] ?: ""
-        } else if(cat == Categories.WIFI) {
-            wifiData = QrCodeParser.parseWifiQRCode(result)
-        } else if(cat == Categories.PAYMENT) {
-            upiData = QrCodeParser.parseUpiQrCode(result)
+        when (cat) {
+            Categories.CONTACT -> {
+                vcardResult = parseVCard(result)
+                phoneNumber = vcardResult!!["Phone No."] ?: vcardResult!!["Mobile No."] ?: ""
+            }
+            Categories.WIFI -> {
+                wifiData = QrCodeParser.parseWifiQRCode(result)
+            }
+            Categories.PAYMENT -> {
+                upiData = QrCodeParser.parseUpiQrCode(result)
 
+            }
         }
 
     }
